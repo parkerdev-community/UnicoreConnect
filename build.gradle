@@ -21,6 +21,12 @@ subprojects {
         maven {
             url "https://repo.spongepowered.org/maven"
         }
+        maven {
+            url "https://ci.frostcast.net/plugin/repository/everything"
+        }
+        maven {
+            url 'https://jitpack.io'
+        }
     }
 
     processResources {

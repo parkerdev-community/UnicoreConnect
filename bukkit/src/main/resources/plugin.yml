@@ -3,3 +3,5 @@ main: ru.zirconiamc.zirconiaconnect.bukkit.ZirconiaConnect
 version: @app.version@
 description: ZirconiaConnect
 authors: [ZirconiaStudio]
+depend: [Vault]
+softdepend: [BanManager, LiteBans, LuckPerms]

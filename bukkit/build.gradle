@@ -4,16 +4,19 @@ plugins {
 }
 
 dependencies {
-    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.8.8-R0.1-SNAPSHOT"
+    implementation("com.github.hazae41:mc-kutils:master-SNAPSHOT")
+    implementation project(':ZirconiaConnect-common')
 
-    implementation project(":ZirconiaConnect-common")
+    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.8.8-R0.1-SNAPSHOT"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    compileOnly 'net.luckperms:api:5.3'
+    compileOnly 'me.confuser.banmanager:BanManagerBukkit:7.7.0-SNAPSHOT'
+    compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
 }
 
 shadowJar {
     archiveClassifier.set('')
     mergeServiceFiles()
-
-    relocate 'org.jetbrains.exposed', 'ru.zirconiamc.zirconiaconnect.lib.exposed'
 }
 
 artifacts {
