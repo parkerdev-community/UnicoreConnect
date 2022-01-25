@@ -1,0 +1,21 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+}
+
+dependencies {
+    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.8.8-R0.1-SNAPSHOT"
+
+    implementation project(":ZirconiaConnect-common")
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    mergeServiceFiles()
+
+    relocate 'org.jetbrains.exposed', 'ru.zirconiamc.zirconiaconnect.lib.exposed'
+}
+
+artifacts {
+    archives shadowJar
+}

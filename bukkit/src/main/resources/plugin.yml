@@ -1,0 +1,5 @@
+name: ZirconiaConnect
+main: ru.zirconiamc.zirconiaconnect.bukkit.ZirconiaConnect
+version: @app.version@
+description: ZirconiaConnect
+authors: [ZirconiaStudio]

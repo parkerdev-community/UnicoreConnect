@@ -1,0 +1,9 @@
+rootProject.name = 'ZirconiaConnect'
+
+include 'common'
+findProject(':common')?.name = 'ZirconiaConnect-common'
+
+include 'bukkit'
+findProject(':bukkit')?.name = 'ZirconiaConnect-bukkit'
+include 'sponge'
+findProject(':sponge')?.name = 'ZirconiaConnect-sponge'
