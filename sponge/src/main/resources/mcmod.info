@@ -1,0 +1,7 @@
+  [{
+    "modid": "zirconiaconnect",
+    "name": ZirconiaConnect",
+    "description": "ZirconiaStudio",
+    "mcversion": "1.12.2",
+    "authorList": ["ZirconiaStudio"],
+  }]

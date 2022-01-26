@@ -4,4 +4,8 @@ version: @app.version@
 description: ZirconiaConnect
 authors: [ZirconiaStudio]
 depend: [Vault]
-softdepend: [BanManager, LiteBans, LuckPerms]
+softdepend: [BanManager, LuckPerms]
+commands:
+  money:
+    usage: /<command>
+    permission: zirconia.money

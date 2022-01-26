@@ -1,0 +1,18 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+dependencies {
+    implementation project(":ZirconiaConnect-common")
+    implementation project(":ZirconiaConnect-bukkit")
+    implementation project(":ZirconiaConnect-sponge")
+}
+
+shadowJar {
+    destinationDir = file("$rootDir/build/libs")
+    archiveClassifier.set('')
+}
+
+artifacts {
+    archives shadowJar
+}

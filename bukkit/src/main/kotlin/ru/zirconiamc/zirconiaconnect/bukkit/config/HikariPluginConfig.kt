@@ -1,11 +1,11 @@
 package ru.zirconiamc.zirconiaconnect.bukkit.config
 
 import com.zaxxer.hikari.HikariConfig
-import ru.zirconiamc.zirconiaconnect.bukkit.util.Instance
+import ru.zirconiamc.zirconiaconnect.bukkit.PluginInstance
 import ru.zirconiamc.zirconiaconnect.common.config.HikariConfiguration
 
 class HikariPluginConfig {
-    private val plugin = Instance.plugin
+    private val plugin = PluginInstance.plugin
 
     private val jdbc: String = plugin.config.getString("database.jdbc")
     private val user: String? = plugin.config.getString("database.user")
