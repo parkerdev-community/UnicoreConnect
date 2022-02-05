@@ -1,5 +1,6 @@
 # ZirconiaConnect ![Kotlin](https://img.shields.io/badge/-Kotlin-05122A?style=flat&logo=Kotlin&logoColor=FFA518)&nbsp;
 [![Build Status](https://github.com/ZirconiaStudio/ZirconiaConnect/actions/workflows/gradle.yml/badge.svg)](https://github.com/ZirconiaStudio/ZirconiaConnect/actions)
+[![Telegram](https://img.shields.io/endpoint?style=social&url=https://runkit.io/damiankrawczyk/telegram-badge/branches/master?url=https://t.me/zirconiacms)](https://t.me/zirconiacms)
 
 > Плагин для интеграции [ZirconiaCMS](https://github.com/ZirconiaStudio/ZirconiaConnect) с серверными платформами Spigot и Sponge
 
