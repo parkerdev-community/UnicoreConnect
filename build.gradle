@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 defaultTasks 'build'
 
 allprojects {
-    group 'ru.zirconiamc'
+    group 'uno.unicore'
     version '1.0.0-SNAPSHOT'
 }
 

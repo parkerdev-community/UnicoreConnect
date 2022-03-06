@@ -1,11 +1,11 @@
-rootProject.name = 'ZirconiaConnect'
+rootProject.name = 'UnicoreConnect'
 
 include 'common'
-findProject(':common')?.name = 'ZirconiaConnect-common'
+findProject(':common')?.name = 'UnicoreConnect-common'
 
 include 'bukkit'
-findProject(':bukkit')?.name = 'ZirconiaConnect-bukkit'
+findProject(':bukkit')?.name = 'UnicoreConnect-bukkit'
 include 'sponge'
-findProject(':sponge')?.name = 'ZirconiaConnect-sponge'
+findProject(':sponge')?.name = 'UnicoreConnect-sponge'
 include 'universal'
-findProject(':universal')?.name = 'ZirconiaConnect-universal'
+findProject(':universal')?.name = 'UnicoreConnect-universal'

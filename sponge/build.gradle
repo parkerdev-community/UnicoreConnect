@@ -19,6 +19,7 @@ dependencies {
     compileOnly "org.spongepowered:spongeapi:7.2.0"
     compileOnly 'net.luckperms:api:5.3'
     compileOnly 'me.confuser.banmanager:BanManagerSponge:7.7.0-SNAPSHOT'
+    compileOnly 'com.github.NucleusPowered:Nucleus:2.4.0'
 
-    implementation project(':ZirconiaConnect-common')
+    implementation project(':UnicoreConnect-common')
 }

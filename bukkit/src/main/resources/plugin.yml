@@ -1,10 +1,9 @@
-name: ZirconiaConnect
-main: ru.zirconiamc.zirconiaconnect.bukkit.ZirconiaConnect
+name: UnicoreConnect
+main: uno.unicore.unicoreconnect.bukkit.UnicoreConnectPlugin
 version: @app.version@
-description: ZirconiaConnect
-authors: [ZirconiaStudio]
-depend: [Vault]
-softdepend: [BanManager, LuckPerms]
+description: Plugin for integrating UnicoreCMS with the Spigot and Sponge server platforms
+authors: [UnicoreProject]
+softdepend: [BanManager, LuckPerms, AfkPlus, Vault]
 commands:
   money:
     usage: /<command>
