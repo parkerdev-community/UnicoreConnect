@@ -33,6 +33,12 @@ subprojects {
         maven {
             url 'https://jitpack.io'
         }
+        maven {
+            url "https://repo.essentialsx.net/releases/"
+        }
+        maven {
+            url "https://papermc.io/repo/repository/maven-public/"
+        }
     }
 
     processResources {

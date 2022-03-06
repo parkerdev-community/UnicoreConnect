@@ -3,7 +3,6 @@ package uno.unicore.unicoreconnect.bukkit
 import hazae41.minecraft.kutils.bukkit.schedule
 import org.bukkit.plugin.java.JavaPlugin
 import uno.unicore.unicoreconnect.bukkit.config.UnicorePluginConfig
-import uno.unicore.unicoreconnect.bukkit.hooks.AFKPlus
 import uno.unicore.unicoreconnect.bukkit.hooks.vault.Vault
 import uno.unicore.unicoreconnect.common.SocketClient
 import uno.unicore.unicoreconnect.common.UnicoreCommon
@@ -21,7 +20,7 @@ class UnicoreConnectPlugin : JavaPlugin() {
     private val vault = Vault()
     private val socketListener = SocketListener()
     private var banManger = BanManager()
-    private val afkPlus = AFKPlus()
+    private val playtimeTask = PlaytimeTask()
 
     override fun onEnable() {
         logger.info("Checking server...")
@@ -38,32 +37,16 @@ class UnicoreConnectPlugin : JavaPlugin() {
 
             banManger.hook()
             vault.hook()
-            afkPlus.inject()
+            playtimeTask.inject()
 
             // Schedulers
-            schedule(period = 3, delay = 10) {
-                socketClient.reconnectHandler()
-            }
-
-            schedule(period = 1, unit = TimeUnit.MINUTES) {
-                if (server.onlinePlayers.isNotEmpty()) {
-                    if (afkPlus.playerApi == null) {
-                        UnicoreCommon.playtimeService.update(server.onlinePlayers
-                            .map { it.uniqueId }
-                        )
-                    } else {
-                        UnicoreCommon.playtimeService.update(server.onlinePlayers
-                            .filter { !afkPlus.playerApi!!.getPlayer(it.uniqueId).isAFK }
-                            .map { it.uniqueId }
-                        )
-                    }
-                }
-            }
+            schedule(period = 3, delay = 10) { socketClient.reconnectHandler() }
+            schedule(period = 1, unit = TimeUnit.MINUTES) { playtimeTask.handler() }
         }
     }
 
     override fun onDisable() {
-        BanManager().unhook()
+        banManger.unhook()
         vault.unhook()
 
         logger.info("Closing WebSocket connection...")

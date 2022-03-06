@@ -4,10 +4,6 @@ plugins {
     id "org.jetbrains.kotlin.kapt" version "1.6.10"
 }
 
-repositories {
-
-}
-
 dependencies {
     compileOnly('me.confuser.banmanager:BanManagerCommon:7.7.0-SNAPSHOT')
     compileOnly 'org.projectlombok:lombok:1.18.22'

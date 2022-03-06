@@ -5,7 +5,6 @@ import me.confuser.banmanager.bukkit.api.events.PlayerUnbanEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import uno.unicore.unicoreconnect.common.UnicoreCommon
-import uno.unicore.unicoreconnect.common.services.BanService
 
 
 class BanListener : Listener {

@@ -27,9 +27,9 @@ class UnicorePluginConfig {
 
     init {
         setDefaultValues()
-        config.server = plugin.config.getString("server")
-        config.apiUrl = plugin.config.getString("api.url")
-        config.apiKey = plugin.config.getString("api.key")
+        config.server = plugin.config.getString("server").toString()
+        config.apiUrl = plugin.config.getString("api.url").toString()
+        config.apiKey = plugin.config.getString("api.key").toString()
     }
 
     fun get(): UnicoreConfig = config

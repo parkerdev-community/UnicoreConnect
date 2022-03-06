@@ -10,12 +10,10 @@ class Vault {
     var enable: Boolean = false
     private val plugin = PluginInstance.plugin
     private val logger = plugin.logger
-    private fun getVault(): Plugin? {
-        return Bukkit.getPluginManager().getPlugin("Vault")
-    }
+    private val vaultPlugin = Bukkit.getPluginManager().getPlugin("Vault")
 
     fun hook() {
-        if (getVault() != null) {
+        if (vaultPlugin != null) {
             Bukkit.getServer().servicesManager.register(
                 Economy::class.java,
                 VaultEconomyHook(),
@@ -28,7 +26,7 @@ class Vault {
     }
 
     fun unhook() {
-        if (getVault() != null) {
+        if (vaultPlugin != null) {
             Bukkit.getServer().servicesManager.unregister(this)
             enable = false
         }

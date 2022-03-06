@@ -5,7 +5,6 @@ import me.confuser.banmanager.common.BanManagerPlugin
 import org.bukkit.Bukkit
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.plugin.Plugin
 import uno.unicore.unicoreconnect.bukkit.PluginInstance
 import uno.unicore.unicoreconnect.bukkit.listeners.BanJoinListener
 import uno.unicore.unicoreconnect.bukkit.listeners.BanListener
@@ -13,12 +12,9 @@ import uno.unicore.unicoreconnect.bukkit.listeners.BanListener
 class BanManager {
     var enable: Boolean = false
     private val plugin = PluginInstance.plugin
-    private fun getBanManager(): Plugin? {
-        return Bukkit.getPluginManager().getPlugin("BanManager")
-    }
+    private val bmPlugin = Bukkit.getPluginManager().getPlugin("BanManager")
 
     fun hook() {
-        val bmPlugin = getBanManager()
         if (bmPlugin != null) {
             AsyncPlayerPreLoginEvent.getHandlerList().unregister(bmPlugin);
             PlayerJoinEvent.getHandlerList().unregister(bmPlugin);
@@ -33,7 +29,6 @@ class BanManager {
     }
 
     fun unhook() {
-        val bmPlugin = getBanManager()
         if (bmPlugin != null) {
             plugin.server.pluginManager.registerEvents(JoinListener(BanManagerPlugin.getInstance()), bmPlugin)
             plugin.logger.info("Modified BanManger listeners to default")
