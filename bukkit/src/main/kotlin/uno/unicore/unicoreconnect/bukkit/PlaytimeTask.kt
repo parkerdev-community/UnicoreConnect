@@ -12,12 +12,12 @@ class PlaytimeTask {
     private val cmiPlugin = Bukkit.getPluginManager().getPlugin("CMI")
     private var cmiInstance: CMI? = null
 
-    fun inject() {
+    fun load() {
         if (essPlugin != null) {
-            plugin.logger.info("Essentials/EssentialsX is used to check players for AFK")
+            plugin.logger.info("Successfully hook Essentials/EssentialsX")
         } else if (cmiPlugin != null) {
             cmiInstance = CMI.getInstance()
-            plugin.logger.info("CMI is used to check players for AFK")
+            plugin.logger.info("Successfully hook CMI")
         }
     }
 

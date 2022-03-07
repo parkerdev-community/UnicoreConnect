@@ -2,26 +2,15 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
-repositories {
-    maven {
-        name "essentialsx-releases"
-        url "https://repo.essentialsx.net/releases/"
-    }
-    maven {
-        name "papermc"
-        url "https://papermc.io/repo/repository/maven-public/"
-    }
-}
-
 dependencies {
     implementation("com.github.hazae41:mc-kutils:master-SNAPSHOT")
-    implementation('com.github.SaiintBrisson.command-framework:bukkit:1.2.0')
+    implementation('co.aikar:acf-bukkit:0.5.1-SNAPSHOT')
     implementation('com.github.tr7zw.Item-NBT-API:item-nbt-api:2.9.0')
     implementation project(':UnicoreConnect-common')
 
+    compileOnly "me.clip:placeholderapi:2.11.1"
     compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.12.2-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
-    compileOnly 'net.luckperms:api:5.3'
     compileOnly 'me.confuser.banmanager:BanManagerBukkit:7.7.0-SNAPSHOT'
     compileOnly 'net.essentialsx:EssentialsX:2.19.0'
     compileOnly files('libs/CMIAPI8.7.8.2.jar')

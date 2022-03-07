@@ -1,8 +1,10 @@
 package uno.unicore.unicoreconnect.bukkit.listeners
 
+import org.bukkit.Bukkit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import uno.unicore.unicoreconnect.bukkit.CommandManager
 import uno.unicore.unicoreconnect.bukkit.PluginInstance
 import uno.unicore.unicoreconnect.common.UnicoreCommon
 import uno.unicore.unicoreconnect.common.events.SocketEvent
@@ -37,5 +39,11 @@ class SocketListener {
     fun onSocketError(event: SocketEvent.ERROR) {
         UnicoreCommon.socketClient.close()
         plugin.logger.warning(event.message)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBuyDonate(event: SocketEvent.BUY_DONATE) {
+        val player = Bukkit.getPlayer(event.payload.user.username)
+        player?.sendMessage(CommandManager.msg("unicoreconnect.event_buy_donate", replacements = arrayOf("{group}", event.payload.group.name)))
     }
 }

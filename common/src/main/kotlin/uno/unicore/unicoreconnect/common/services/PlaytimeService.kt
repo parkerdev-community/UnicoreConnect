@@ -9,20 +9,12 @@ class PlaytimeService {
     private var config = UnicoreCommon.config
     private var baseUrl = "${config.apiUrl}/cabinet/playtime"
 
-    fun findOne(uuid: UUID): Playtime? {
-        return try {
-            UnicoreCommon.requester.get("$baseUrl/user/${config.server}/$uuid").getOrThrow()
-        } catch (_: Exception) {
-            null
-        }
+    fun findOne(uuid: UUID): Playtime {
+        return UnicoreCommon.requester.get("$baseUrl/user/${config.server}/$uuid").getOrThrow()
     }
 
-    fun findTop(): List<Playtime>? {
-        return try {
-            UnicoreCommon.requester.get("$baseUrl/${config.server}").getOrThrow()
-        } catch (_: Exception) {
-            null
-        }
+    fun findTop(): Array<Playtime> {
+        return UnicoreCommon.requester.get("$baseUrl/${config.server}").getOrThrow()
     }
 
     fun update(uuids: List<UUID>) {

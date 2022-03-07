@@ -1,31 +1,9 @@
 name: UnicoreConnect
-main: uno.unicore.unicoreconnect.bukkit.UnicoreConnectPlugin
+main: uno.unicore.unicoreconnect.bukkit.UnicoreConnectBukkit
 version: @app.version@
 description: Plugin for integrating UnicoreCMS with the Spigot and Sponge server platforms
 authors: [UnicoreProject]
-softdepend: [BanManager, LuckPerms, Essentials, Vault, CMI]
-
-commands:
-  balance:
-    description: Текущий баланс игрока.
-    usage: /<command> [player]
-    aliases: [ bal, money ]
-  balancetop:
-    description: Топ 10 богачей сервера.
-    usage: /<command> [player]
-    aliases: [ baltop, moneytop ]
-  playtime:
-    description: Текущее время онлайн игрока.
-    usage: /<command> [player]
-    aliases: [ pt ]
-  playtimetop:
-    description: Топ 10 игроков по времени онлайн.
-    usage: /<command> [player]
-    aliases: [ ptop, playtop ]
-  showcase:
-    description: Выдача покупок из магазина.
-    usage: /<command> [list|give|all] [id]
-    aliases: [ cart ]
+softdepend: [BanManager, LuckPerms, Essentials, Vault, CMI, PlaceholderAPI]
 
 
 

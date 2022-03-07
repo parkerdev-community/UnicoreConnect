@@ -3,9 +3,12 @@ package uno.unicore.unicoreconnect.bukkit.hooks.vault
 import net.milkbowl.vault.economy.EconomyResponse
 import org.bukkit.OfflinePlayer
 import uno.unicore.unicoreconnect.bukkit.PluginInstance
+import uno.unicore.unicoreconnect.common.UnicoreCommon
+import java.text.DecimalFormat
 
 class VaultEconomyHook : EconomyWrapper() {
     private val plugin = PluginInstance.plugin
+    private var currencyFormatter = DecimalFormat("0.00")
 
     companion object {}
 
@@ -19,31 +22,31 @@ class VaultEconomyHook : EconomyWrapper() {
 
 
     override fun fractionalDigits(): Int {
-        return 0
+        return 2
     }
 
     override fun format(amount: Double): String {
-        return amount.toString()
+        return currencyFormatter.format(amount)
     }
 
     override fun currencyNamePlural(): String {
-        return ""
+        return "$"
     }
 
     override fun currencyNameSingular(): String {
-        return ""
+        return "$"
     }
 
-    override fun hasAccount(player: OfflinePlayer?): Boolean {
-        return false
+    override fun hasAccount(player: OfflinePlayer): Boolean {
+        return UnicoreCommon.moneyService.checkOne(player.uniqueId)
     }
 
-    override fun getBalance(player: OfflinePlayer?): Double {
-        return 0.0
+    override fun getBalance(player: OfflinePlayer): Double {
+        return UnicoreCommon.moneyService.findOne(player.uniqueId).money
     }
 
     override fun has(player: OfflinePlayer, amount: Double): Boolean {
-       return false
+        return true
     }
 
     override fun withdrawPlayer(player: OfflinePlayer, initialAmount: Double): EconomyResponse {
@@ -54,7 +57,7 @@ class VaultEconomyHook : EconomyWrapper() {
         return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, null)
     }
 
-    override fun createPlayerAccount(player: OfflinePlayer?): Boolean {
-        return true
+    override fun createPlayerAccount(player: OfflinePlayer): Boolean {
+        return UnicoreCommon.moneyService.checkOne(player.uniqueId)
     }
 }

@@ -10,30 +10,27 @@ import uno.unicore.unicoreconnect.bukkit.listeners.BanJoinListener
 import uno.unicore.unicoreconnect.bukkit.listeners.BanListener
 
 class BanManager {
-    var enable: Boolean = false
+    var enabled: Boolean = false
     private val plugin = PluginInstance.plugin
     private val bmPlugin = Bukkit.getPluginManager().getPlugin("BanManager")
-
+    
     fun hook() {
-        if (bmPlugin != null) {
+        if (bmPlugin != null && !enabled) {
             AsyncPlayerPreLoginEvent.getHandlerList().unregister(bmPlugin);
             PlayerJoinEvent.getHandlerList().unregister(bmPlugin);
             plugin.server.pluginManager.registerEvents(BanJoinListener(BanManagerPlugin.getInstance()), plugin)
-            plugin.logger.info("Modified BanManger listeners")
-
             plugin.server.pluginManager.registerEvents(BanListener(), plugin)
-            plugin.logger.info("Registered BanManger bans event listeners")
 
-            enable = true
+            plugin.logger.info("Successfully hook BanManger")
+            enabled = true
         }
     }
 
     fun unhook() {
-        if (bmPlugin != null) {
+        if (bmPlugin != null && enabled) {
             plugin.server.pluginManager.registerEvents(JoinListener(BanManagerPlugin.getInstance()), bmPlugin)
-            plugin.logger.info("Modified BanManger listeners to default")
-
-            enable = false
+            plugin.logger.info("Unhook BanManger...")
+            enabled = false
         }
     }
 }

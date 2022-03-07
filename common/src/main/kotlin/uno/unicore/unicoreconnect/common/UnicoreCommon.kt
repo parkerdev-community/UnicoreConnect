@@ -8,10 +8,13 @@ import uno.unicore.unicoreconnect.common.services.BanService
 import uno.unicore.unicoreconnect.common.services.MoneyService
 import uno.unicore.unicoreconnect.common.services.PlaytimeService
 import uno.unicore.unicoreconnect.common.services.ServerService
+import uno.unicore.unicoreconnect.common.services.donate.DonateGroupService
+import uno.unicore.unicoreconnect.common.types.Server
 
 class UnicoreCommon(pluginConfig: UnicoreConfig) {
     companion object {
         val gson: Gson = GsonBuilder().create()
+        var server: Server? = null
 
         lateinit var config: UnicoreConfig
         lateinit var requester: UnicoreRequester
@@ -22,6 +25,7 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
         lateinit var banService: BanService
         lateinit var moneyService: MoneyService
         lateinit var playtimeService: PlaytimeService
+        lateinit var donateGroupService: DonateGroupService
     }
 
     init {
@@ -33,5 +37,6 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
         banService = BanService()
         moneyService = MoneyService()
         playtimeService = PlaytimeService()
+        donateGroupService = DonateGroupService()
     }
 }

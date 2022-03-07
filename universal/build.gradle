@@ -19,8 +19,10 @@ shadowJar {
     relocate 'de.tr7zw', 'uno.unicore.unicoreconnect.libs.tr7zw'
     relocate 'hazae41.minecraft.kutils', 'uno.unicore.unicoreconnect.libs.kutils'
     relocate 'me.saiintbrisson', 'uno.unicore.unicoreconnect.libs.saiintbrisson'
-    relocate 'org.greenrobot', 'uno.unicore.unicoreconnect.libs.greenrobot'
     relocate 'org.greenrobot.eventbus', 'uno.unicore.unicoreconnect.libs.eventbus'
+    relocate 'co.aikar.commands', 'uno.unicore.unicoreconnect.libs.acf'
+    relocate 'co.aikar.locales', 'uno.unicore.unicoreconnect.libs.locales'
+    relocate 'org.joda.time', 'uno.unicore.unicoreconnect.libs.time'
 }
 
 artifacts {

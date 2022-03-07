@@ -9,13 +9,25 @@ import co.aikar.commands.annotation.Optional
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.joda.time.Duration
+import org.joda.time.format.PeriodFormatterBuilder
 import uno.unicore.unicoreconnect.bukkit.CommandManager
 import uno.unicore.unicoreconnect.bukkit.hooks.vault.Vault
 import uno.unicore.unicoreconnect.common.UnicoreCommon
 
-@CommandPermission("unicoreconnect.command.money")
-@CommandAlias("money|bal|balance")
-class MoneyCommand : BaseCommand() {
+
+@CommandPermission("unicoreconnect.command.playtime")
+@CommandAlias("playtime|pt")
+class PlaytimeCommand : BaseCommand() {
+    val formatter = PeriodFormatterBuilder()
+        .appendDays()
+        .appendSuffix("d ")
+        .appendHours()
+        .appendSuffix("h ")
+        .appendMinutes()
+        .appendSuffix("m ")
+        .toFormatter()
+
     @Default
     fun main(@Optional player: Player?, @Optional target: OnlinePlayer?) {
         if (player == null) {
@@ -23,30 +35,30 @@ class MoneyCommand : BaseCommand() {
                 Bukkit.getConsoleSender()
                     .sendMessage(CommandManager.msg("acf-core.not_allowed_on_console", type = MessageType.ERROR))
             else {
-                val resp = UnicoreCommon.moneyService.findOne(target.player.uniqueId)
+                val resp = UnicoreCommon.playtimeService.findOne(target.player.uniqueId)
                 Bukkit.getConsoleSender().sendMessage(
                     CommandManager.msg(
-                        "unicoreconnect.command_money_other",
-                        replacements = arrayOf("{player}", resp.user.username, "{server}", UnicoreCommon.server!!.name, "{money}", Vault.provider!!.format(resp.money))
+                        "unicoreconnect.command_playtime_other",
+                        replacements = arrayOf("{player}", resp.user.username, "{server}", UnicoreCommon.server!!.name, "{time}", formatter.print(Duration(resp.time * 60 * 1000).toPeriod()))
                     )
                 )
             }
         } else {
             if (target == null) {
-                val resp = UnicoreCommon.moneyService.findOne(player.uniqueId)
+                val resp = UnicoreCommon.playtimeService.findOne(player.uniqueId)
                 player.sendMessage(
                     CommandManager.msg(
-                        "unicoreconnect.command_money",
-                        replacements = arrayOf( "{server}", UnicoreCommon.server!!.name, "{money}", Vault.provider!!.format(resp.money))
+                        "unicoreconnect.command_playtime",
+                        replacements = arrayOf( "{server}", UnicoreCommon.server!!.name, "{time}", formatter.print(Duration(resp.time * 60 * 1000).toPeriod()))
                     )
                 )
             } else {
-                if (player.hasPermission("unicoreconnect.command.money.other")) {
-                    val resp = UnicoreCommon.moneyService.findOne(target.player.uniqueId)
+                if (player.hasPermission("unicoreconnect.command.playtime.other")) {
+                    val resp = UnicoreCommon.playtimeService.findOne(target.player.uniqueId)
                     player.sendMessage(
                         CommandManager.msg(
-                            "unicoreconnect.command_money_other",
-                            replacements = arrayOf("{player}", resp.user.username, "{server}", UnicoreCommon.server!!.name, "{money}", Vault.provider!!.format(resp.money))
+                            "unicoreconnect.command_playtime_other",
+                            replacements = arrayOf("{player}", resp.user.username, "{server}", UnicoreCommon.server!!.name, "{time}", formatter.print(Duration(resp.time * 60 * 1000).toPeriod()))
                         )
                     )
                 } else {

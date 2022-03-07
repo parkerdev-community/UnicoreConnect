@@ -5,6 +5,7 @@ import io.socket.client.Socket
 import org.greenrobot.eventbus.EventBus
 import uno.unicore.unicoreconnect.common.events.SocketEvent
 import uno.unicore.unicoreconnect.common.types.User
+import uno.unicore.unicoreconnect.common.types.UserDonate
 import java.util.Collections.singletonList
 import java.util.Collections.singletonMap
 
@@ -38,6 +39,15 @@ class SocketClient {
                 } else {
                     EventBus.getDefault().post(SocketEvent.CONNECT("Successfully connected to UnicoreCMS socket"))
                 }
+            }
+        }
+
+        socket?.on("buy_donate") { args ->
+            val payload = UnicoreCommon.gson.fromJson(args[0].toString(), UserDonate::class.java)
+
+            if (payload.server.id == config.server) {
+                EventBus.getDefault().post(SocketEvent.BUY_DONATE(payload))
+                UnicoreCommon.donateGroupService.add(payload)
             }
         }
 
