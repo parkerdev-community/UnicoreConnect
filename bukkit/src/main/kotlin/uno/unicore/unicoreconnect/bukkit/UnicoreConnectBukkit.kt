@@ -11,6 +11,7 @@ import uno.unicore.unicoreconnect.common.SocketClient
 import uno.unicore.unicoreconnect.common.UnicoreCommon
 import java.util.concurrent.TimeUnit
 import uno.unicore.unicoreconnect.bukkit.commands.PlaytimeCommand
+import uno.unicore.unicoreconnect.bukkit.commands.ShowcaseCommand
 import uno.unicore.unicoreconnect.bukkit.commands.UnicoreConnectCommand
 import uno.unicore.unicoreconnect.bukkit.hooks.LuckPerms
 import uno.unicore.unicoreconnect.bukkit.hooks.papi.ExpansionHook
@@ -37,6 +38,7 @@ class UnicoreConnectBukkit : JavaPlugin() {
     private var playtimeScheduler: BukkitTask? = null
 
     override fun onEnable() {
+        logger.info("CraftBukkit version ${PluginInstance.version} detected")
         logger.info("Checking server...")
         val gameServer = UnicoreCommon.serversService.check()
 
@@ -59,6 +61,7 @@ class UnicoreConnectBukkit : JavaPlugin() {
 
             CommandManager.manager.registerCommand(PlaytimeCommand())
             CommandManager.manager.registerCommand(UnicoreConnectCommand())
+            CommandManager.manager.registerCommand(ShowcaseCommand())
 
             reconnectScheduler = schedule(period = 1, unit = TimeUnit.MINUTES) { playtimeTask.handler() }
             playtimeScheduler = schedule(period = 3, delay = 10) { socketClient.reconnectHandler() }
