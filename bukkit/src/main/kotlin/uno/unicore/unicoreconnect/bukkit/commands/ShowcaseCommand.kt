@@ -4,15 +4,13 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Subcommand
-import net.minecraft.server.v1_12_R1.Item
-//import net.minecraft.server.v1_12_R1.ItemStack
-import net.minecraft.server.v1_12_R1.MinecraftKey
-//import net.minecraft.server.v1_12_R1.NBTTagCompound
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
+import de.tr7zw.changeme.nbtapi.NBTItem
 import org.bukkit.entity.Player
-import uno.unicore.unicoreconnect.bukkit.PluginInstance
+import org.joda.time.Duration
+import uno.unicore.unicoreconnect.bukkit.CommandManager
+import uno.unicore.unicoreconnect.bukkit.utils.ItemMagic
 import uno.unicore.unicoreconnect.common.UnicoreCommon
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType.Object
+
 
 // import org.bukkit.nms
 
@@ -20,39 +18,17 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType.Object
 @CommandPermission("unicoreconnect.command.showcase")
 @CommandAlias("showcase|cart")
 class ShowcaseCommand : BaseCommand() {
+    private val itemMagic = ItemMagic()
+
     @Subcommand("create")
     @CommandPermission("unicoreconnect.command.showcase.add")
-    fun add(player: Player) {
-        val item = player.inventory.itemInHand
-        val nbtTagCompound = Class.forName("net.minecraft.server.${PluginInstance.version}.NBTTagCompound")
-//
+    fun create(player: Player, price: Double) {
+        val data = itemMagic.itemToWeb(player.inventory.itemInHand, price)
+        val req = UnicoreCommon.showcaseService.create(data)
 
-
-        val itemStack = PluginInstance.CraftItemStack
-            .getDeclaredMethod("asNMSCopy", org.bukkit.inventory.ItemStack::class.java)
-            .invoke(null, item)
-
-        val test = Class.forName("net.minecraft.server.${PluginInstance.version}.ItemStack")
-            .getMethod("func_190916_E")
-            .invoke(itemStack)
-
-        println(test)
-
-        //println(Item.REGISTRY.b(some.javaClass.getMethod("getItem", null).invoke(null) as Item))
-////
-//        println(some.javaClass.fields.)
-//        val sometwo = some.getMethod("save", nbtTagCompound::class.java)
-//            .invoke(null, nbtTagCompound.getConstructor().newInstance())
-
-//            .getMethod("save", nbtTagCompound::class.java)
-//            .invoke(null, nbtTagCompound.getConstructor().newInstance()).javaClass
-
-//  val itemId = CraftItemStack.asNMSCopy(item)
-////        val itemStack = CraftItemStack.asNewCraftStack(Item.REGISTRY.get(MinecraftKey(itemId)))
-////
-//        println(Item.REGISTRY.b(itemId.item))
-        //println(itemStack.type)
-
-        //println(PluginInstance.CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack::class.java).invoke(item))
+        if (req)
+            player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_create", replacements = arrayOf("{id}", data.id )))
+        else
+            throw Exception()
     }
 }

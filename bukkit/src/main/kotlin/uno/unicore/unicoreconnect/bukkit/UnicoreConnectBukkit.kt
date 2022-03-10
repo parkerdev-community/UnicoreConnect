@@ -26,7 +26,7 @@ class UnicoreConnectBukkit : JavaPlugin() {
     private val unicoreCommon = UnicoreCommon(unicoreConfig)
     private val commandManager = CommandManager()
 
-    private val socketClient = SocketClient()
+    private val socketClient = SocketClient(logger)
     private val vault = Vault()
     private val socketListener = SocketListener()
     private val banManger = BanManager()

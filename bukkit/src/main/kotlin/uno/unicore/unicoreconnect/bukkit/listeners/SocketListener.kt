@@ -21,28 +21,8 @@ class SocketListener {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSocketConnect(event: SocketEvent.CONNECT) {
-        plugin.logger.info(event.message)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSocketReconnect(event: SocketEvent.RECONNECT) {
-        plugin.logger.info(event.message)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSocketClose(event: SocketEvent.CLOSE) {
-        plugin.logger.info(event.message)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSocketError(event: SocketEvent.ERROR) {
-        UnicoreCommon.socketClient.close()
-        plugin.logger.warning(event.message)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBuyDonate(event: SocketEvent.BUY_DONATE) {
+        // Сервер проверяется в COMMON
         val player = Bukkit.getPlayer(event.payload.user.username)
         player?.sendMessage(CommandManager.msg("unicoreconnect.event_buy_donate", replacements = arrayOf("{group}", event.payload.group.name)))
     }

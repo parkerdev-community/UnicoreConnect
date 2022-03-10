@@ -8,8 +8,9 @@ import uno.unicore.unicoreconnect.common.types.User
 import uno.unicore.unicoreconnect.common.types.UserDonate
 import java.util.Collections.singletonList
 import java.util.Collections.singletonMap
+import java.util.logging.Logger
 
-class SocketClient {
+class SocketClient(private  val logger: Logger) {
     private var config = UnicoreCommon.config
     private var socket: Socket? = null
 
@@ -30,14 +31,14 @@ class SocketClient {
 
         socket?.on("me") { args ->
             if (args[0] === null) {
-                EventBus.getDefault().post(SocketEvent.ERROR("'apiKey' incorrect"))
+                logger.warning("'apiKey' incorrect")
             } else {
                 val data = UnicoreCommon.gson.fromJson(args[0].toString(), User::class.java)
 
                 if (!data.perms.contains("kernel.unicore.connect")) {
-                    EventBus.getDefault().post(SocketEvent.ERROR("'apiKey' not have permission 'kernel.unicore.connect'"))
+                    logger.warning("'apiKey' not have permission 'kernel.unicore.connect'")
                 } else {
-                    EventBus.getDefault().post(SocketEvent.CONNECT("Successfully connected to UnicoreCMS socket"))
+                    logger.info("Successfully connected to UnicoreCMS socket")
                 }
             }
         }
@@ -52,7 +53,7 @@ class SocketClient {
         }
 
         socket?.on(Socket.EVENT_DISCONNECT) {
-            EventBus.getDefault().post(SocketEvent.RECONNECT("Reconnecting to UnicoreCMS socket..."))
+            logger.info("Reconnecting to UnicoreCMS socket...")
         }
 
         socket?.connect()

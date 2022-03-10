@@ -4,10 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import uno.unicore.unicoreconnect.common.config.UnicoreConfig
 import uno.unicore.unicoreconnect.common.http.UnicoreRequester
-import uno.unicore.unicoreconnect.common.services.BanService
-import uno.unicore.unicoreconnect.common.services.MoneyService
-import uno.unicore.unicoreconnect.common.services.PlaytimeService
-import uno.unicore.unicoreconnect.common.services.ServerService
+import uno.unicore.unicoreconnect.common.services.*
 import uno.unicore.unicoreconnect.common.services.donate.DonateGroupService
 import uno.unicore.unicoreconnect.common.types.Server
 
@@ -18,7 +15,6 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
 
         lateinit var config: UnicoreConfig
         lateinit var requester: UnicoreRequester
-        lateinit var socketClient: SocketClient
 
         // Services
         lateinit var serversService: ServerService
@@ -26,17 +22,18 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
         lateinit var moneyService: MoneyService
         lateinit var playtimeService: PlaytimeService
         lateinit var donateGroupService: DonateGroupService
+        lateinit var showcaseService: ShowcaseService
     }
 
     init {
         config = pluginConfig
         requester = UnicoreRequester()
-        socketClient = SocketClient()
 
         serversService = ServerService()
         banService = BanService()
         moneyService = MoneyService()
         playtimeService = PlaytimeService()
         donateGroupService = DonateGroupService()
+        showcaseService = ShowcaseService()
     }
 }
