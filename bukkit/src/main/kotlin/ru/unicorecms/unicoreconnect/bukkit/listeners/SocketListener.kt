@@ -4,13 +4,10 @@ import org.bukkit.Bukkit
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
 import ru.unicorecms.unicoreconnect.common.events.SocketEvent
 import ru.unicorecms.unicoreconnect.bukkit.CommandManager
 
 class SocketListener {
-    private val plugin = PluginInstance.plugin
-
     fun register() {
         EventBus.getDefault().register(this)
     }
@@ -20,8 +17,26 @@ class SocketListener {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBuyDonate(event: SocketEvent.BUY_DONATE) {
+    fun onGiveGroup(event: SocketEvent.GIVE_GROUP) {
         val player = Bukkit.getPlayer(event.payload.user.username)
-        player?.sendMessage(CommandManager.msg("unicoreconnect.event_buy_donate", replacements = arrayOf("{name}", event.payload.group.name)))
+        player?.sendMessage(CommandManager.msg("unicoreconnect.event_give_group", replacements = arrayOf("{name}", event.payload.group.name)))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTakeGroup(event: SocketEvent.TAKE_GROUP) {
+        val player = Bukkit.getPlayer(event.payload.user.username)
+        player?.sendMessage(CommandManager.msg("unicoreconnect.event_take_group", replacements = arrayOf("{name}", event.payload.group.name)))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onGivePermission(event: SocketEvent.GIVE_PERMISSION) {
+        val player = Bukkit.getPlayer(event.payload.user.username)
+        player?.sendMessage(CommandManager.msg("unicoreconnect.event_give_permission", replacements = arrayOf("{name}", event.payload.permission.name)))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTakePermission(event: SocketEvent.TAKE_PERMISSION) {
+        val player = Bukkit.getPlayer(event.payload.user.username)
+        player?.sendMessage(CommandManager.msg("unicoreconnect.event_take_permission", replacements = arrayOf("{name}", event.payload.permission.name)))
     }
 }

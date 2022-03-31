@@ -6,6 +6,8 @@ import org.greenrobot.eventbus.EventBus
 import ru.unicorecms.unicoreconnect.common.events.SocketEvent
 import ru.unicorecms.unicoreconnect.common.types.User
 import ru.unicorecms.unicoreconnect.common.types.UserDonate
+import ru.unicorecms.unicoreconnect.common.types.UserPermission
+import java.util.*
 import java.util.Collections.singletonList
 import java.util.Collections.singletonMap
 import java.util.logging.Logger
@@ -43,12 +45,39 @@ class SocketClient(private  val logger: Logger) {
             }
         }
 
-        socket?.on("buy_donate") { args ->
+        socket?.on("give_group") { args ->
             val payload = UnicoreCommon.gson.fromJson(args[0].toString(), UserDonate::class.java)
 
             if (payload.server.id == config.server) {
-                EventBus.getDefault().post(SocketEvent.BUY_DONATE(payload))
+                EventBus.getDefault().post(SocketEvent.GIVE_GROUP(payload))
                 UnicoreCommon.donateGroupService.add(payload)
+            }
+        }
+
+        socket?.on("take_group") { args ->
+            val payload = UnicoreCommon.gson.fromJson(args[0].toString(), UserDonate::class.java)
+
+            if (payload.server.id == config.server) {
+                EventBus.getDefault().post(SocketEvent.TAKE_GROUP(payload))
+                UnicoreCommon.donateGroupService.remove(UUID.fromString(payload.user.uuid), payload.group)
+            }
+        }
+
+        socket?.on("give_permission") { args ->
+            val payload = UnicoreCommon.gson.fromJson(args[0].toString(), UserPermission::class.java)
+
+            if (payload.server.id == config.server) {
+                EventBus.getDefault().post(SocketEvent.GIVE_PERMISSION(payload))
+                UnicoreCommon.donatePermissionService.add(payload)
+            }
+        }
+
+        socket?.on("take_permission") { args ->
+            val payload = UnicoreCommon.gson.fromJson(args[0].toString(), UserPermission::class.java)
+
+            if (payload.server.id == config.server) {
+                EventBus.getDefault().post(SocketEvent.TAKE_PERMISSION(payload))
+                UnicoreCommon.donatePermissionService.remove(UUID.fromString(payload.user.uuid), payload.permission)
             }
         }
 

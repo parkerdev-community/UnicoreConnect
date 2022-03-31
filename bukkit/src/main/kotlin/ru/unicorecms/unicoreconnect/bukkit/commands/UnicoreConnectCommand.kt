@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.Subcommand
 import org.bukkit.command.CommandSender
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.services.donate.DonateGroupService
+import ru.unicorecms.unicoreconnect.common.services.donate.DonatePermissionService
 
 @CommandAlias("unicoreconnect|uc")
 class UnicoreConnectCommand : BaseCommand() {
@@ -15,8 +16,13 @@ class UnicoreConnectCommand : BaseCommand() {
     fun sync (sender: CommandSender) {
         try {
             sender.sendMessage("Syncing UnicoreCMS donate-groups...")
+            sender.sendMessage("Syncing UnicoreCMS donate-perms...")
+
             UnicoreCommon.donateGroupService.load()
+            UnicoreCommon.donatePermissionService.load()
+
             sender.sendMessage("Loaded ${DonateGroupService.groups.size} donate-groups from API")
+            sender.sendMessage("Loaded ${DonatePermissionService.permissions.size} donate-perms from API")
         } catch (e: Exception) {
             sender.sendMessage("Error getting group list! $e")
         }

@@ -5,6 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
 import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
 import ru.unicorecms.unicoreconnect.bukkit.commands.MoneyCommand
+import ru.unicorecms.unicoreconnect.bukkit.CommandManager
 
 class Vault {
     var enabled: Boolean = false
@@ -25,7 +26,7 @@ class Vault {
                 ServicePriority.Highest
             )
             provider = plugin.server.servicesManager.getRegistration(Economy::class.java)?.provider
-            ru.unicorecms.unicoreconnect.bukkit.CommandManager.manager.registerCommand(MoneyCommand())
+            CommandManager.manager.registerCommand(MoneyCommand())
             logger.info("Successfully hook Vault")
             enabled = true
         }
@@ -34,7 +35,7 @@ class Vault {
     fun unhook() {
         if (vaultPlugin != null && enabled) {
             provider?.let { Bukkit.getServer().servicesManager.unregister(it) }
-            ru.unicorecms.unicoreconnect.bukkit.CommandManager.manager.unregisterCommand(MoneyCommand())
+            CommandManager.manager.unregisterCommand(MoneyCommand())
             logger.info("Unhook Vault...")
             enabled = false
         }

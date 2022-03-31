@@ -6,6 +6,7 @@ import ru.unicorecms.unicoreconnect.common.config.UnicoreConfig
 import ru.unicorecms.unicoreconnect.common.http.UnicoreRequester
 import ru.unicorecms.unicoreconnect.common.services.*
 import ru.unicorecms.unicoreconnect.common.services.donate.DonateGroupService
+import ru.unicorecms.unicoreconnect.common.services.donate.DonatePermissionService
 import ru.unicorecms.unicoreconnect.common.types.Server
 
 class UnicoreCommon(pluginConfig: UnicoreConfig) {
@@ -22,6 +23,7 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
         lateinit var moneyService: MoneyService
         lateinit var playtimeService: PlaytimeService
         lateinit var donateGroupService: DonateGroupService
+        lateinit var donatePermissionService: DonatePermissionService
         lateinit var showcaseService: ShowcaseService
     }
 
@@ -34,6 +36,7 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
         moneyService = MoneyService()
         playtimeService = PlaytimeService()
         donateGroupService = DonateGroupService()
+        donatePermissionService = DonatePermissionService()
         showcaseService = ShowcaseService()
     }
 }

@@ -58,9 +58,9 @@ class ShowcaseCommand : BaseCommand() {
         if (req.isEmpty())
             return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
 
-        player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_list") + "\n" + req.joinToString(
+        player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_list", replacements = arrayOf("{items}", req.joinToString(
             "\n"
-        ) { "${it.product.name} x${it.amount} (${it.id})" })
+        ) { "${it.product.name} x${it.amount} (#${it.id})" })))
     }
 
     @Syntax("[id]")

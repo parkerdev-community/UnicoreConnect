@@ -9,5 +9,6 @@ class LPJoinListener : Listener {
     @EventHandler
     fun joinEvent(event: PlayerJoinEvent) {
         UnicoreCommon.donateGroupService.handleJoin(event.player.uniqueId)
+        UnicoreCommon.donatePermissionService.handleJoin(event.player.uniqueId)
     }
 }
