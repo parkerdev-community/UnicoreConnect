@@ -6,7 +6,7 @@ import org.bukkit.Bukkit
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 
 class PlaytimeTask {
-    private val plugin = ru.unicorecms.unicoreconnect.bukkit.PluginInstance.Companion.plugin
+    private val plugin = PluginInstance.plugin
     private val essPlugin = Bukkit.getPluginManager().getPlugin("Essentials") as Essentials?
     private val cmiPlugin = Bukkit.getPluginManager().getPlugin("CMI")
     private var cmiInstance: CMI? = null

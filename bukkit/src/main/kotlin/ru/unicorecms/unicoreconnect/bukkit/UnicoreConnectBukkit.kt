@@ -22,21 +22,20 @@ class UnicoreConnectBukkit : JavaPlugin() {
     private val pluginInstance = PluginInstance(this)
     private val unicoreConfig = UnicorePluginConfig().get()
     private val unicoreCommon = UnicoreCommon(unicoreConfig)
-    private val commandManager = ru.unicorecms.unicoreconnect.bukkit.CommandManager()
+    private val commandManager = CommandManager()
 
     private val socketClient = SocketClient(logger)
     private val vault = Vault()
     private val socketListener = SocketListener()
     private val banManger = BanManager()
     private val luckPerms = LuckPerms()
-    private val playtimeTask = ru.unicorecms.unicoreconnect.bukkit.PlaytimeTask()
+    private val playtimeTask = PlaytimeTask()
     private val expansionHook = ExpansionHook()
 
     private var reconnectScheduler: BukkitTask? = null
     private var playtimeScheduler: BukkitTask? = null
 
     override fun onEnable() {
-        logger.info("CraftBukkit version ${PluginInstance.version} detected")
         logger.info("Checking server...")
         val gameServer = UnicoreCommon.serversService.check()
 
@@ -57,9 +56,9 @@ class UnicoreConnectBukkit : JavaPlugin() {
             expansionHook.hook()
             luckPerms.hook()
 
-            ru.unicorecms.unicoreconnect.bukkit.CommandManager.manager.registerCommand(PlaytimeCommand())
-            ru.unicorecms.unicoreconnect.bukkit.CommandManager.manager.registerCommand(UnicoreConnectCommand())
-            ru.unicorecms.unicoreconnect.bukkit.CommandManager.manager.registerCommand(ShowcaseCommand())
+            CommandManager.manager.registerCommand(PlaytimeCommand())
+            CommandManager.manager.registerCommand(UnicoreConnectCommand())
+            CommandManager.manager.registerCommand(ShowcaseCommand())
 
             reconnectScheduler = schedule(period = 1, unit = TimeUnit.MINUTES) { playtimeTask.handler() }
             playtimeScheduler = schedule(period = 3, delay = 10) { socketClient.reconnectHandler() }

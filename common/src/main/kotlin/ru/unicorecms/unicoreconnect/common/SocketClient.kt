@@ -33,7 +33,7 @@ class SocketClient(private  val logger: Logger) {
             if (args[0] === null) {
                 logger.warning("'apiKey' incorrect")
             } else {
-                val data = ru.unicorecms.unicoreconnect.common.UnicoreCommon.Companion.gson.fromJson(args[0].toString(), User::class.java)
+                val data = UnicoreCommon.gson.fromJson(args[0].toString(), User::class.java)
 
                 if (!data.perms.contains("kernel.unicore.connect")) {
                     logger.warning("'apiKey' not have permission 'kernel.unicore.connect'")
@@ -44,11 +44,11 @@ class SocketClient(private  val logger: Logger) {
         }
 
         socket?.on("buy_donate") { args ->
-            val payload = ru.unicorecms.unicoreconnect.common.UnicoreCommon.Companion.gson.fromJson(args[0].toString(), UserDonate::class.java)
+            val payload = UnicoreCommon.gson.fromJson(args[0].toString(), UserDonate::class.java)
 
             if (payload.server.id == config.server) {
                 EventBus.getDefault().post(SocketEvent.BUY_DONATE(payload))
-                ru.unicorecms.unicoreconnect.common.UnicoreCommon.Companion.donateGroupService.add(payload)
+                UnicoreCommon.donateGroupService.add(payload)
             }
         }
 

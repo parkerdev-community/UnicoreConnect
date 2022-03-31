@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import ru.unicorecms.unicoreconnect.bukkit.utils.ItemMagic
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.types.WarehouseItem
+import ru.unicorecms.unicoreconnect.bukkit.CommandManager
 
 @CommandPermission("unicoreconnect.command.showcase")
 @CommandAlias("showcase|cart")
@@ -24,7 +25,7 @@ class ShowcaseCommand : BaseCommand() {
         val req = UnicoreCommon.showcaseService.create(data)
 
         if (req)
-            player.sendMessage(ru.unicorecms.unicoreconnect.bukkit.CommandManager.msg("unicoreconnect.command_showcase_create", replacements = arrayOf("{id}", data.id)))
+            player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_create", replacements = arrayOf("{id}", data.id)))
         else
             throw Exception()
     }
@@ -35,7 +36,7 @@ class ShowcaseCommand : BaseCommand() {
         val req = UnicoreCommon.showcaseService.find(player.uniqueId)
 
         if (req.isEmpty())
-            return player.sendMessage(ru.unicorecms.unicoreconnect.bukkit.CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
+            return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
 
         for (item in req) {
             val itemStack = itemMagic.serialize(item)
@@ -47,7 +48,19 @@ class ShowcaseCommand : BaseCommand() {
         }
 
         UnicoreCommon.showcaseService.gived(gived)
-        player.sendMessage(ru.unicorecms.unicoreconnect.bukkit.CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
+        player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
+    }
+
+    @Subcommand("list")
+    fun list(player: Player) {
+        val req = UnicoreCommon.showcaseService.find(player.uniqueId)
+
+        if (req.isEmpty())
+            return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
+
+        player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_list") + "\n" + req.joinToString(
+            "\n"
+        ) { "${it.product.name} x${it.amount} (${it.id})" })
     }
 
     @Syntax("[id]")
@@ -57,7 +70,7 @@ class ShowcaseCommand : BaseCommand() {
         val req = UnicoreCommon.showcaseService.find(player.uniqueId).filter { it.id == id }
 
         if (req.isEmpty())
-            return player.sendMessage(ru.unicorecms.unicoreconnect.bukkit.CommandManager.msg("unicoreconnect.command_showcase_give_fail", replacements = arrayOf("{id}", id.toString()), type = MessageType.ERROR))
+            return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_give_fail", replacements = arrayOf("{id}", id.toString()), type = MessageType.ERROR))
 
         for (item in req) {
             val itemStack = itemMagic.serialize(item)
@@ -69,6 +82,6 @@ class ShowcaseCommand : BaseCommand() {
         }
 
         UnicoreCommon.showcaseService.gived(gived)
-        player.sendMessage(ru.unicorecms.unicoreconnect.bukkit.CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
+        player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
     }
 }

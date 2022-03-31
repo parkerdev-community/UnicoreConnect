@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.joda.time.Duration
 import org.joda.time.format.PeriodFormatterBuilder
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
+import ru.unicorecms.unicoreconnect.bukkit.CommandManager
 
 @CommandPermission("unicoreconnect.command.playtime")
 @CommandAlias("playtime|pt")
@@ -26,7 +27,7 @@ class PlaytimeCommand : BaseCommand() {
         val resp = UnicoreCommon.playtimeService.findOne(player.uniqueId)
 
         player.sendMessage(
-            ru.unicorecms.unicoreconnect.bukkit.CommandManager.msg(
+            CommandManager.msg(
                 "unicoreconnect.command_playtime",
                 replacements = arrayOf(
                     "{server}",
