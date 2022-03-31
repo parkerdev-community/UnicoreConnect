@@ -1,5 +1,5 @@
 name: UnicoreConnect
-main: uno.unicore.unicoreconnect.bukkit.UnicoreConnectBukkit
+main: ru.unicorecms.unicoreconnect.bukkit.UnicoreConnectBukkit
 version: @app.version@
 description: Plugin for integrating UnicoreCMS with the Spigot and Sponge server platforms
 authors: [UnicoreProject]
