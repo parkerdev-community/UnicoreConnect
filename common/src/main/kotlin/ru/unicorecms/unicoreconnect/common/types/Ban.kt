@@ -4,7 +4,7 @@ import java.util.Date
 
 class Ban {
     lateinit var user: User
-    lateinit var actor: User
+    var actor: User? = null
     lateinit var reason: String
 
     var expires: Date? = null
