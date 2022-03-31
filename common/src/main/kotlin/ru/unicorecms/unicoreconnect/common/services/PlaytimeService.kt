@@ -14,10 +14,10 @@ class PlaytimeService {
     }
 
     fun findTop(): Array<Playtime> {
-        return UnicoreCommon.requester.get("$baseUrl/${config.server}").getOrThrow()
+        return UnicoreCommon.requester.get("$baseUrl/top/${config.server}").getOrThrow()
     }
 
     fun update(uuids: List<UUID>) {
-        UnicoreCommon.requester.patch(baseUrl, uuids.map { PlaytimeRequest(it.toString(), config.server) })
+        UnicoreCommon.requester.patch(baseUrl, uuids.map { PlaytimeRequest(it.toString()) })
     }
 }

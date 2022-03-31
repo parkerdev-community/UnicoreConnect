@@ -12,7 +12,6 @@ import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.types.WarehouseItem
 import ru.unicorecms.unicoreconnect.bukkit.CommandManager
 
-@CommandPermission("unicoreconnect.command.showcase")
 @CommandAlias("showcase|cart")
 class ShowcaseCommand : BaseCommand() {
     private val itemMagic = ItemMagic()
@@ -31,6 +30,7 @@ class ShowcaseCommand : BaseCommand() {
     }
 
     @Subcommand("all")
+    @CommandPermission("unicoreconnect.command.showcase.all")
     fun all(player: Player) {
         val gived = arrayListOf<WarehouseItem>()
         val req = UnicoreCommon.showcaseService.find(player.uniqueId)
@@ -52,6 +52,7 @@ class ShowcaseCommand : BaseCommand() {
     }
 
     @Subcommand("list")
+    @CommandPermission("unicoreconnect.command.showcase.list")
     fun list(player: Player) {
         val req = UnicoreCommon.showcaseService.find(player.uniqueId)
 
@@ -65,6 +66,7 @@ class ShowcaseCommand : BaseCommand() {
 
     @Syntax("[id]")
     @Subcommand("give")
+    @CommandPermission("unicoreconnect.command.showcase.give")
     fun give(player: Player, id: Int) {
         val gived = arrayListOf<WarehouseItem>()
         val req = UnicoreCommon.showcaseService.find(player.uniqueId).filter { it.id == id }

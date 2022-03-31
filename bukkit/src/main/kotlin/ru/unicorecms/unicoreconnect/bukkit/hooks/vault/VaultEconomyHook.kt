@@ -38,7 +38,7 @@ class VaultEconomyHook : EconomyWrapper() {
     }
 
     override fun hasAccount(player: OfflinePlayer): Boolean {
-        return UnicoreCommon.moneyService.checkOne(player.uniqueId)
+        return true
     }
 
     override fun getBalance(player: OfflinePlayer): Double {
@@ -46,15 +46,25 @@ class VaultEconomyHook : EconomyWrapper() {
     }
 
     override fun has(player: OfflinePlayer, amount: Double): Boolean {
-        return true
+        return UnicoreCommon.moneyService.findOne(player.uniqueId).money >= amount
     }
 
     override fun withdrawPlayer(player: OfflinePlayer, initialAmount: Double): EconomyResponse {
-        return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, null)
+        return try {
+            val resp = UnicoreCommon.moneyService.withdraw(player.uniqueId, initialAmount)
+            EconomyResponse(initialAmount, resp.money, EconomyResponse.ResponseType.SUCCESS, null)
+        } catch (e: Exception) {
+            EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, null)
+        }
     }
 
     override fun depositPlayer(player: OfflinePlayer, initialAmount: Double): EconomyResponse {
-        return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, null)
+        return try {
+            val resp = UnicoreCommon.moneyService.deposit(player.uniqueId, initialAmount)
+            EconomyResponse(initialAmount, resp.money, EconomyResponse.ResponseType.SUCCESS, null)
+        } catch (e: Exception) {
+            EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, null)
+        }
     }
 
     override fun createPlayerAccount(player: OfflinePlayer): Boolean {
