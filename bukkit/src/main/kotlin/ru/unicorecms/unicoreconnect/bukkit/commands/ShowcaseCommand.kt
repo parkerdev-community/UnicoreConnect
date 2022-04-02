@@ -18,7 +18,7 @@ class ShowcaseCommand : BaseCommand() {
 
     @Subcommand("create")
     @Syntax("[price] [name]")
-    @CommandPermission("unicoreconnect.command.showcase.create")
+    @CommandPermission("unicoreconnect.admin.showcase.create")
     fun create(player: Player, price: Double, name: String) {
         val data = itemMagic.serialize(player.inventory.itemInHand, name, price)
         val req = UnicoreCommon.showcaseService.create(data)

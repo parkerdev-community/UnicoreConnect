@@ -10,10 +10,10 @@ import ru.unicorecms.unicoreconnect.bukkit.hooks.vault.Vault
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.bukkit.CommandManager
 
-@CommandPermission("unicoreconnect.command.money")
 @CommandAlias("money|bal|balance")
 class MoneyCommand : BaseCommand() {
     @Default
+    @CommandPermission("unicoreconnect.command.money")
     fun main(player: Player) {
         val resp = UnicoreCommon.moneyService.findOne(player.uniqueId)
 

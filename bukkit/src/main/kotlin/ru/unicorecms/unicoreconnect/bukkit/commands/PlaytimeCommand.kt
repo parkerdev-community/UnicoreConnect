@@ -11,9 +11,7 @@ import org.joda.time.Duration
 import org.joda.time.format.PeriodFormatterBuilder
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.bukkit.CommandManager
-import ru.unicorecms.unicoreconnect.bukkit.hooks.vault.Vault
 
-@CommandPermission("unicoreconnect.command.playtime")
 @CommandAlias("playtime|pt")
 class PlaytimeCommand : BaseCommand() {
     private val formatter = PeriodFormatterBuilder()
@@ -26,6 +24,7 @@ class PlaytimeCommand : BaseCommand() {
         .toFormatter()
 
     @Default
+    @CommandPermission("unicoreconnect.command.playtime")
     fun main(player: Player) {
         val resp = UnicoreCommon.playtimeService.findOne(player.uniqueId)
 
