@@ -4,7 +4,7 @@
 [![Build Status](https://github.com/UnicoreProject/UnicoreConnect/actions/workflows/gradle.yml/badge.svg)](https://github.com/UnicoreProject/UnicoreConnect/actions)
 [![Telegram](https://img.shields.io/endpoint?style=social&url=https://runkit.io/damiankrawczyk/telegram-badge/branches/master?url=https://t.me/unicore_project)](https://t.me/unicore_project)
 
-> Плагин для интеграции [UnicoreCMS](https://unicorecms.ru) с серверными платформами Spigot и Sponge
+> Плагин **Spigot/Sponge** для интеграции экономики, прав, групп, склада-покупок, банов и сбора статистики между сайтом и серверами.
 
 #### Поддерживаемые ядра
 - Spigot/Bukkit 1.7.10 - 1.18.1, также их форки по типу PaperSpigot.
@@ -18,7 +18,7 @@
 * **Vault** - включит модуль внутриигровой экономики (Spigot)
 
 ## Установка и настройка
-1. Создайте API-ключ с правом `unicore.kernel.connect`.
+1. [Создайте API-ключ](https://unicorecms.ru/docs/admin/api-keys#создание-api-ключа) с правом `unicore.kernel.connect`.
 2. Поместите Jar-файл в папку плагинов.
 3. Произведите настройку файла конфигурации UnicoreConnect.
 
@@ -48,17 +48,19 @@ cd UnicoreConnect/
 ## Команды и права
 
 ### Экономика
-Команды | Пермишен | Описание |
+| Команды | Пермишен | Описание |
 | --- |  --- |  --- |
-| /money, /bal, /balance | unicoreconnect.command.money | Баланс внутриигровой валюты |
-| /moneytop, /baltop, /balancetop | unicoreconnect.command.moneytop | Топ 10 богачей сервера |
-| /pay \[player\] \[amount\] | unicoreconnect.command.pay | Перевести монеты игроку |
+| /money | unicoreconnect.command.money | Баланс внутриигровой валюты |
+| /money top | unicoreconnect.command.money.top | Топ 10 богачей сервера |
+| /money pay \[player\] \[amount\] | unicoreconnect.command.money.pay | Перевести монеты игроку |
+**Алиасы:** /bal, /balance
 
 ### PlayTime
 Команды | Пермишен | Описание |
 | --- |  --- |  --- |
-| /playtime, /pt | unicoreconnect.command.playtime | Время проведённое на сервере |
-| /playtimetop, /pttop | unicoreconnect.command.playtimetop | Топ 10 по времени онлайн сервера |
+| /playtime | unicoreconnect.command.playtime | Время проведённое на сервере |
+| /playtime top | unicoreconnect.command.playtime.top | Топ 10 по времени онлайн сервера |
+**Алиасы:** /pt
 
 ### Склад и магазин
 Команды | Пермишен | Описание |
@@ -66,10 +68,36 @@ cd UnicoreConnect/
 | /cart list | unicoreconnect.command.showcase.list | Список товаров на складе |
 | /cart give \[id\] | unicoreconnect.command.showcase.give | Выдать товар со склада |
 | /cart all | unicoreconnect.command.showcase.all | Выдать все товары со склада |
-| /cart add \[price\] \[name\] | unicoreconnect.command.showcase.create | Добавить предмет, находящийся в руке в магазин |
+**Алиасы:** /showcase
 
 ### Администрирование
 Команды | Пермишен | Описание |
 | --- |  --- |  --- |
-| /uc reload | unicoreconnect.admin | Перезагрузить плагин |
-| /uc sync | unicoreconnect.admin | Переподключится к UnicoreServer |
+| /cart create \[price\] \[name\] | unicoreconnect.admin.showcase.create | Добавить предмет, находящийся в руке в магазин |
+| /uc sync или /unicoreconnect sync | unicoreconnect.admin.sync | Переподключится к UnicoreServer и заного синхронизировать донат-группы и донат-права |
+
+## Локализация
+
+Для редактирования исходных сообщений, откройте файл плагина, как архив. Сообщения хранятся в файле **acf-unicoreconnect_ru.properties**
+
+```properties
+unicoreconnect.command_money=Ваш баланс на сервере {server}: <c2>{money}</c2>
+unicoreconnect.command_money_pay=Перевод игроку <c2>{target}</c2> успешно совершён. Текущий баланс: <c2>{money}</c2>
+unicoreconnect.command_money_pay_target=Вам поступил перевод <c2>{amount}</c2> от <c2>{player}</c2>
+unicoreconnect.command_money_pay_fail=При переводе произошла ошибка, возможно на балансе недостаточно денег!
+unicoreconnect.command_money_top=<c2>Топ-богачей {server}:</c2>\n{rows}
+
+unicoreconnect.command_playtime=Время проведённое на сервере {server}: <c2>{time}</c2>
+unicoreconnect.command_playtime_top=<c2>Топ-онлайн {server}:</c2>\n{rows}
+
+unicoreconnect.command_showcase_create=<c2>{id}</c2> успешно добавлен в веб-магазин
+unicoreconnect.command_showcase=Выдано <c2>{amount}</c2> предметов со склада
+unicoreconnect.command_showcase_list=<c2>Предметы на вашем складе:</c2>\n{items}
+unicoreconnect.command_showcase_all_fail=Ваш склад пуст!
+unicoreconnect.command_showcase_give_fail=Предмет #<c2>{id}</c2> не найден на вашем складе!
+
+unicoreconnect.event_give_group=Поздравляем вас с покупкой донат-группы - <c2>{name}</c2>!
+unicoreconnect.event_take_group=С вас была снята донат-группа - <c2>{name}</c2>!
+unicoreconnect.event_give_permission=Поздравляем вас с покупкой донат-права - <c2>{name}</c2>!
+unicoreconnect.event_take_permission=С вас была снята донат-права - <c2>{name}</c2>!
+```
