@@ -12,7 +12,7 @@ import javax.inject.Inject
     version = "@version@",
     description = "Plugin for integrating ZirconiaCMS with the Spigot and Sponge server platforms"
 )
-class UnicoreConnectPlugin {
+class UnicoreConnectSponge {
     @Inject
     private lateinit var logger: Logger
 
