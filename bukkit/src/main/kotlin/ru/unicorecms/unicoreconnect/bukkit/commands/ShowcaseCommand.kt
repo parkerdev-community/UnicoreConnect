@@ -6,15 +6,20 @@ import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
+import me.dpohvar.powernbt.nbt.NBTContainerItem
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import ru.unicorecms.unicoreconnect.bukkit.utils.ItemMagic
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.types.WarehouseItem
 import ru.unicorecms.unicoreconnect.bukkit.CommandManager
+import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
+import ru.unicorecms.unicoreconnect.common.types.GiveMethod
 
 @CommandAlias("showcase|cart")
 class ShowcaseCommand : BaseCommand() {
     private val itemMagic = ItemMagic()
+    private val plugin = PluginInstance.plugin
 
     @Subcommand("create")
     @Syntax("[price] [name]")
@@ -39,12 +44,33 @@ class ShowcaseCommand : BaseCommand() {
             return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
 
         for (item in req) {
-            val itemStack = itemMagic.serialize(item)
+            when (item.product.give_method) {
+                GiveMethod.UnicoreConnect -> {
+                    val itemStack = itemMagic.serialize(item)
 
-            for (i in 1..item.amount) {
-                if (player.inventory.addItem(itemStack).size == 0)
-                    gived.add(item)
+                    if (itemStack != null) {
+                        for (i in 1..item.amount) {
+                            if (player.inventory.addItem(itemStack).size == 0)
+                                gived.add(item)
+                        }
+                    }
+                }
+                GiveMethod.UnicoreConnectCommand -> {
+                    for (command in item.product.commands!!) {
+                        val dispatchCommand = command
+                            .replace("{user.username}", player.name)
+                            .replace("{product.name}", item.product.name!!)
+                            .replace("{product.amount}", item.amount.toString())
+                            .replace("{server.id}", UnicoreCommon.server!!.id)
+                            .replace("{server.name}", UnicoreCommon.server!!.name)
+
+                        if (plugin.server.dispatchCommand(plugin.server.consoleSender, dispatchCommand))
+                            gived.add(item)
+                    }
+                }
+                else -> {}
             }
+
         }
 
         UnicoreCommon.showcaseService.gived(gived)
@@ -75,11 +101,31 @@ class ShowcaseCommand : BaseCommand() {
             return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_give_fail", replacements = arrayOf("{id}", id.toString()), type = MessageType.ERROR))
 
         for (item in req) {
-            val itemStack = itemMagic.serialize(item)
+            when (item.product.give_method) {
+                GiveMethod.UnicoreConnect -> {
+                    val itemStack = itemMagic.serialize(item)
 
-            for (i in 1..item.amount) {
-                if (player.inventory.addItem(itemStack).size == 0)
-                    gived.add(item)
+                    if (itemStack != null) {
+                        for (i in 1..item.amount) {
+                            if (player.inventory.addItem(itemStack).size == 0)
+                                gived.add(item)
+                        }
+                    }
+                }
+                GiveMethod.UnicoreConnectCommand -> {
+                    for (command in item.product.commands!!) {
+                        val dispatchCommand = command
+                                .replace("{user.username}", player.name)
+                                .replace("{product.name}", item.product.name!!)
+                                .replace("{product.amount}", item.amount.toString())
+                                .replace("{server.id}", UnicoreCommon.server!!.id)
+                                .replace("{server.name}", UnicoreCommon.server!!.name)
+
+                        if (plugin.server.dispatchCommand(plugin.server.consoleSender, dispatchCommand))
+                            gived.add(item)
+                    }
+                }
+                else -> {}
             }
         }
 

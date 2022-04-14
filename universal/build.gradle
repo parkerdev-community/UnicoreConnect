@@ -24,14 +24,14 @@ shadowJar {
     relocate 'com.google.gson', 'ru.unicorecms.unicoreconnect.libs.gson'
     relocate 'okhttp3', 'ru.unicorecms.unicoreconnect.libs.okhttp3'
     relocate 'okio', 'ru.unicorecms.unicoreconnect.libs.okio'
-    relocate 'de.tr7zw.changeme.nbtapi', 'ru.unicorecms.unicoreconnect.libs.nbtapi'
-    relocate 'de.tr7zw.annotations', 'ru.unicorecms.unicoreconnect.libs.nbtapi.annotations'
     relocate 'hazae41.minecraft.kutils', 'ru.unicorecms.unicoreconnect.libs.kutils'
     relocate 'me.saiintbrisson', 'ru.unicorecms.unicoreconnect.libs.saiintbrisson'
     relocate 'org.greenrobot.eventbus', 'ru.unicorecms.unicoreconnect.libs.eventbus'
     relocate 'co.aikar.commands', 'ru.unicorecms.unicoreconnect.libs.acf'
     relocate 'co.aikar.locales', 'ru.unicorecms.unicoreconnect.libs.locales'
     relocate 'org.joda.time', 'ru.unicorecms.unicoreconnect.libs.time'
+    relocate 'me.limito.bukkit.jsonnbt', 'ru.unicorecms.unicoreconnect.libs.jsonnbt'
+    relocate 'me.dpohvar.powernbt', 'ru.unicorecms.unicoreconnect.libs.powernbt'
 }
 
 artifacts {

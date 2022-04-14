@@ -26,13 +26,13 @@ class PlaytimeTask {
         if (players.isNotEmpty()) {
             if (essPlugin != null) {
                 UnicoreCommon.playtimeService.update(players
-                    .filter { !essPlugin.getUser(it.uniqueId).isAfk }
-                    .map { it.uniqueId }
+                        .filter { !essPlugin.getUser(it).isAfk }
+                        .map { it.uniqueId }
                 )
             } else if (cmiInstance != null) {
                 UnicoreCommon.playtimeService.update(players
-                    .filter { !cmiInstance!!.playerManager.getUser(it).isAfk }
-                    .map { it.uniqueId }
+                        .filter { !cmiInstance!!.playerManager.getUser(it).isAfk }
+                        .map { it.uniqueId }
                 )
             } else {
                 UnicoreCommon.playtimeService.update(players.map { it.uniqueId })

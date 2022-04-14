@@ -14,7 +14,6 @@ import ru.unicorecms.unicoreconnect.bukkit.commands.PlaytimeCommand
 import ru.unicorecms.unicoreconnect.bukkit.commands.ShowcaseCommand
 import ru.unicorecms.unicoreconnect.bukkit.commands.UnicoreConnectCommand
 import ru.unicorecms.unicoreconnect.bukkit.hooks.LuckPerms
-import ru.unicorecms.unicoreconnect.bukkit.hooks.papi.ExpansionHook
 
 @Suppress("unused")
 class UnicoreConnectBukkit : JavaPlugin() {
@@ -30,7 +29,6 @@ class UnicoreConnectBukkit : JavaPlugin() {
     private val banManger = BanManager()
     private val luckPerms = LuckPerms()
     private val playtimeTask = PlaytimeTask()
-    private val expansionHook = ExpansionHook()
 
     private var reconnectScheduler: BukkitTask? = null
     private var playtimeScheduler: BukkitTask? = null
@@ -53,7 +51,6 @@ class UnicoreConnectBukkit : JavaPlugin() {
             banManger.hook()
             vault.hook()
             playtimeTask.load()
-            expansionHook.hook()
             luckPerms.hook()
 
             CommandManager.manager.registerCommand(PlaytimeCommand())
@@ -71,7 +68,6 @@ class UnicoreConnectBukkit : JavaPlugin() {
 
         banManger.unhook()
         vault.unhook()
-        expansionHook.unhook()
 
         socketListener.unregister()
         socketClient.close()

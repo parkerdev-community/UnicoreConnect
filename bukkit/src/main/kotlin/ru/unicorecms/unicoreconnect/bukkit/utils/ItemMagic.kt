@@ -1,50 +1,50 @@
 package ru.unicorecms.unicoreconnect.bukkit.utils
 
-import de.tr7zw.changeme.nbtapi.NBTContainer
-import de.tr7zw.changeme.nbtapi.NBTItem
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
+import ru.unicorecms.unicoreconnect.bukkit.utils.nbt.PowerNBTHelper
 import ru.unicorecms.unicoreconnect.common.types.StoreRequest
 import ru.unicorecms.unicoreconnect.common.types.WarehouseItem
 
+
 class ItemMagic {
-    private val plugin = PluginInstance.plugin
+    private val nbtHelper = PowerNBTHelper()
 
-    init {
-        // Load library...
-        MinecraftVersion.disableBStats()
-        MinecraftVersion.disableUpdateCheck()
-        MinecraftVersion.replaceLogger(plugin.logger)
-        NBTItem.convertItemtoNBT(ItemStack(Material.AIR))
-    }
+    fun serialize(item: WarehouseItem, amount: Int = 1): ItemStack? {
+        val id = item.product.item_id!!.split("@").toMutableList()
+        val damage = if (id.size == 1) 0 else id[1].toShort()
 
-    fun serialize(item: WarehouseItem, amount: Int = 1): ItemStack {
-        val id = item.product.item_id!!.split("@")
-        val damage = if (id.size == 1) 0 else id[1]
+        if (id[0].contains(":")) {
+            val registryName = id[0].split(":")
 
-        val container = NBTContainer("{\"id\": \"${id[0]}\", \"Damage\":$damage, \"tag\":${item.product.nbt}}")
-        container.setInteger("Count", amount)
+            if (registryName[0] == "minecraft") {
+                id[0] = when (registryName[1]) {
+                    "spawn_egg" -> "MONSTER_EGG"
+                    else -> registryName[1].uppercase()
+                }
+            }
+            else id[0] = registryName.joinToString("_").uppercase()
+        }
 
-        return NBTItem.convertNBTtoItem(container)
+        val material = Material.getMaterial(id[0]) ?: return null
+        val itemStack = ItemStack(material, amount, damage)
+
+        if (item.product.nbt == null) return itemStack
+
+        return nbtHelper.placeTag(nbtHelper.parseJson(item.product.nbt!!), itemStack)
     }
 
     fun serialize(item: ItemStack, name: String, price: Double): StoreRequest {
-        val container = NBTItem.convertItemtoNBT(item)
-        var id = container.getString("id")
-        val nbt = container.getCompound("tag")?.toString()
+        var id = item.type.name
+        val damage = item.durability.toInt()
+        val tag = nbtHelper.getTag(item)?.let { nbtHelper.encodeJson(it) }
 
-        if (id == "minecraft:air")
+        if (id == Material.AIR.name)
             throw Exception("AIR not supported!")
 
-        if (container.hasKey("Damage")) {
-            val damage = container.getInteger("Damage")
+        if (damage != 0)
+            id = "$id@$damage"
 
-            if (damage != 0)
-                id = "$id@$damage"
-        }
-
-        return StoreRequest(id, name, nbt, price)
+        return StoreRequest(id, name, tag, price)
     }
 }

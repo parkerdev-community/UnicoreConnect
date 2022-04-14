@@ -20,6 +20,7 @@ class CommandManager {
 
     fun init() {
         manager = BukkitCommandManager(plugin)
+        manager.usePerIssuerLocale(false, false);
         consoleIssuer = manager.getCommandIssuer(Bukkit.getConsoleSender())
 
         // Locales
