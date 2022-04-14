@@ -2,6 +2,7 @@ package ru.unicorecms.unicoreconnect.common.services.donate
 
 import net.luckperms.api.LuckPerms
 import net.luckperms.api.LuckPermsProvider
+import net.luckperms.api.context.DefaultContextKeys
 import net.luckperms.api.node.NodeType
 import net.luckperms.api.node.types.InheritanceNode
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
@@ -43,7 +44,7 @@ class DonateGroupService {
         val user = provider!!.userManager.loadUser(UUID.fromString(userDonate.user.uuid)).get()
 
         if (user != null) {
-            val node = InheritanceNode.builder(userDonate.group.ingame_id)
+            val node = InheritanceNode.builder(userDonate.group.ingame_id).withContext(DefaultContextKeys.SERVER_KEY, config.server)
             if (userDonate.expired != null)
                 node.expiry(userDonate.expired!!.time / 1000)
 
@@ -57,7 +58,7 @@ class DonateGroupService {
 
         if (user != null) {
             val node = user.getNodes(NodeType.INHERITANCE).stream()
-                .filter { it.groupName == userGroup.ingame_id }
+                .filter { it.groupName == userGroup.ingame_id && it.contexts.contains(DefaultContextKeys.SERVER_KEY, config.server) }
                 .findFirst().get()
 
             user.data().remove(node)

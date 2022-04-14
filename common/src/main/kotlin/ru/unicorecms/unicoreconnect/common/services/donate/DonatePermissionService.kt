@@ -2,6 +2,7 @@ package ru.unicorecms.unicoreconnect.common.services.donate
 
 import net.luckperms.api.LuckPerms
 import net.luckperms.api.LuckPermsProvider
+import net.luckperms.api.context.DefaultContextKeys
 import net.luckperms.api.node.NodeType
 import net.luckperms.api.node.types.PermissionNode
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
@@ -46,7 +47,7 @@ class DonatePermissionService {
 
         if (user != null && userPermission.permission.perms != null && userPermission.permission.perms!!.isNotEmpty()) {
             for (perm in userPermission.permission.perms!!) {
-                val node = PermissionNode.builder(perm)
+                val node = PermissionNode.builder(perm).withContext(DefaultContextKeys.SERVER_KEY, config.server)
 
                 if (userPermission.expired != null)
                     node.expiry(userPermission.expired!!.time / 1000)
@@ -64,7 +65,7 @@ class DonatePermissionService {
         if (user != null && permission.perms != null && permission.perms!!.isNotEmpty()) {
             for (perm in permission.perms!!) {
                 val node = user.getNodes(NodeType.PERMISSION).stream()
-                    .filter { it.permission == perm }
+                    .filter { it.permission == perm && it.contexts.contains(DefaultContextKeys.SERVER_KEY, config.server) }
                     .findFirst().get()
 
                 user.data().remove(node)
