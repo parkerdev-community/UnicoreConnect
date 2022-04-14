@@ -1,7 +1,9 @@
 package ru.unicorecms.unicoreconnect.bukkit.config
 
+import hazae41.minecraft.kutils.bukkit.keys
 import org.bukkit.configuration.file.FileConfiguration
 import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
+import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.config.UnicoreConfig
 
 class UnicorePluginConfig {
@@ -14,9 +16,7 @@ class UnicorePluginConfig {
         fileConfig.addDefault("server", "hitech")
         fileConfig.addDefault("api.url", "http://127.0.0.1:5000")
         fileConfig.addDefault("api.key", "XXX")
-
-        // Messages
-        fileConfig.addDefault("messages.not-player", "§4Only players are supported for this command")
+        fileConfig.addDefault("items_mapping", UnicoreCommon.itemsMapDefault)
         save()
     }
 
@@ -30,6 +30,12 @@ class UnicorePluginConfig {
         config.server = plugin.config.getString("server").toString()
         config.apiUrl = plugin.config.getString("api.url").toString()
         config.apiKey = plugin.config.getString("api.key").toString()
+
+        val mapItem = plugin.config.getConfigurationSection("items_mapping")
+
+        for (key in mapItem!!.keys) {
+            UnicoreCommon.itemsMap[key] = mapItem[key].toString()
+        }
     }
 
     fun get(): UnicoreConfig = config

@@ -3,9 +3,9 @@ package ru.unicorecms.unicoreconnect.bukkit.utils
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import ru.unicorecms.unicoreconnect.bukkit.utils.nbt.PowerNBTHelper
+import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.types.StoreRequest
 import ru.unicorecms.unicoreconnect.common.types.WarehouseItem
-
 
 class ItemMagic {
     private val nbtHelper = PowerNBTHelper()
@@ -16,14 +16,14 @@ class ItemMagic {
 
         if (id[0].contains(":")) {
             val registryName = id[0].split(":")
+            var tempId = if (registryName[0] == "minecraft") registryName[1].uppercase()
+            else registryName.joinToString("_").uppercase()
 
-            if (registryName[0] == "minecraft") {
-                id[0] = when (registryName[1]) {
-                    "spawn_egg" -> "MONSTER_EGG"
-                    else -> registryName[1].uppercase()
-                }
+            for (its in UnicoreCommon.itemsMap.entries) {
+                if (its.key.replaceFirst("_", ":") ==  id[0]) tempId = its.value
             }
-            else id[0] = registryName.joinToString("_").uppercase()
+
+            id[0] = tempId
         }
 
         val material = Material.getMaterial(id[0]) ?: return null

@@ -13,6 +13,12 @@ class UnicoreCommon(pluginConfig: UnicoreConfig) {
     companion object {
         val gson: Gson = GsonBuilder().create()
         var server: Server? = null
+        var itemsMap = mutableMapOf<String, String>()
+        var itemsMapDefault =  mapOf(
+            "minecraft_spawn_egg" to "MONSTER_EGG",
+            "minecraft_dye" to "INK_SACK",
+            "minecraft_mycelium" to "MYCEL"
+        )
 
         lateinit var config: UnicoreConfig
         lateinit var requester: UnicoreRequester
