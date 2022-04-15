@@ -13,9 +13,9 @@ import java.util.*
 class DonatePermissionService {
     private var config = UnicoreCommon.config
     private var baseUrl = "${config.apiUrl}/donates/permissions"
+    private var provider: LuckPerms? = null
 
     companion object {
-        var provider: LuckPerms? = null
         var permissions: Array<DonatePermission> = arrayOf()
     }
 
@@ -26,7 +26,8 @@ class DonatePermissionService {
 
     fun handleJoin(uuid: UUID) {
         val user = provider!!.userManager.loadUser(uuid).get()
-        val userPermissions = user.getNodes(NodeType.PERMISSION)
+        val userPermissions = user.getNodes(NodeType.PERMISSION).filter {
+            provider!!.serverName == "global" || it.contexts.contains(DefaultContextKeys.SERVER_KEY, provider!!.serverName) }
         val unicoreUserPermissions = UnicoreCommon.requester.get("$baseUrl/user/${config.server}/$uuid").getOrThrow<Array<UserPermission>>()
 
         unicoreUserPermissions.map { unicoreUserPerm ->
@@ -49,6 +50,9 @@ class DonatePermissionService {
             for (perm in userPermission.permission.perms!!) {
                 val node = PermissionNode.builder(perm).withContext(DefaultContextKeys.SERVER_KEY, config.server)
 
+                if (provider!!.serverName != "global")
+                    node.withContext(DefaultContextKeys.SERVER_KEY, provider!!.serverName)
+
                 if (userPermission.expired != null)
                     node.expiry(userPermission.expired!!.time / 1000)
 
@@ -64,11 +68,13 @@ class DonatePermissionService {
 
         if (user != null && permission.perms != null && permission.perms!!.isNotEmpty()) {
             for (perm in permission.perms!!) {
-                val node = user.getNodes(NodeType.PERMISSION).stream()
-                    .filter { it.permission == perm && it.contexts.contains(DefaultContextKeys.SERVER_KEY, config.server) }
-                    .findFirst().get()
+                val node = user.getNodes(NodeType.PERMISSION).firstOrNull {
+                    it.permission == perm && (provider!!.serverName == "global" || it.contexts.contains(DefaultContextKeys.SERVER_KEY, config.server))
+                }
 
-                user.data().remove(node)
+                if (node != null) {
+                    user.data().remove(node)
+                }
             }
 
             provider!!.userManager.saveUser(user);

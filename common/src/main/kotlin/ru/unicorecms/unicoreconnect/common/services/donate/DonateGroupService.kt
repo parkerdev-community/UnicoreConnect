@@ -13,9 +13,9 @@ import java.util.*
 class DonateGroupService {
     private var config = UnicoreCommon.config
     private var baseUrl = "${config.apiUrl}/donates/groups"
+    private var provider: LuckPerms? = null
 
     companion object {
-        var provider: LuckPerms? = null
         var groups: Array<DonateGroup> = arrayOf()
     }
 
@@ -26,7 +26,9 @@ class DonateGroupService {
 
     fun handleJoin(uuid: UUID) {
         val user = provider!!.userManager.loadUser(uuid).get()
-        val userGroups = user.getInheritedGroups(user.queryOptions)
+        val userGroups = user.getInheritedGroups(user.queryOptions).filter {
+            provider!!.serverName == "global" || it.queryOptions.context().contains(DefaultContextKeys.SERVER_KEY, provider!!.serverName)
+        }
         val unicoreUserGroups = UnicoreCommon.requester.get("$baseUrl/user/${config.server}/$uuid").getOrThrow<Array<UserDonate>>()
 
         unicoreUserGroups.map { unicoreUserGroup ->
@@ -44,7 +46,12 @@ class DonateGroupService {
         val user = provider!!.userManager.loadUser(UUID.fromString(userDonate.user.uuid)).get()
 
         if (user != null) {
-            val node = InheritanceNode.builder(userDonate.group.ingame_id).withContext(DefaultContextKeys.SERVER_KEY, config.server)
+            val node = InheritanceNode.builder(userDonate.group.ingame_id)
+
+
+            if (provider!!.serverName != "global")
+                node.withContext(DefaultContextKeys.SERVER_KEY, provider!!.serverName)
+
             if (userDonate.expired != null)
                 node.expiry(userDonate.expired!!.time / 1000)
 
@@ -57,12 +64,14 @@ class DonateGroupService {
         val user = provider!!.userManager.loadUser(uuid).get()
 
         if (user != null) {
-            val node = user.getNodes(NodeType.INHERITANCE).stream()
-                .filter { it.groupName == userGroup.ingame_id && it.contexts.contains(DefaultContextKeys.SERVER_KEY, config.server) }
-                .findFirst().get()
+            val node = user.getNodes(NodeType.INHERITANCE).firstOrNull {
+                it.groupName == userGroup.ingame_id && (provider!!.serverName == "global" || it.contexts.contains(DefaultContextKeys.SERVER_KEY, provider!!.serverName))
+            }
 
-            user.data().remove(node)
-            provider!!.userManager.saveUser(user);
+            if (node != null) {
+                user.data().remove(node)
+                provider!!.userManager.saveUser(user);
+            }
         }
     }
 }
