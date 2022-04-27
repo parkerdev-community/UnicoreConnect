@@ -14,6 +14,7 @@ import ru.unicorecms.unicoreconnect.bukkit.commands.PlaytimeCommand
 import ru.unicorecms.unicoreconnect.bukkit.commands.ShowcaseCommand
 import ru.unicorecms.unicoreconnect.bukkit.commands.UnicoreConnectCommand
 import ru.unicorecms.unicoreconnect.bukkit.hooks.LuckPerms
+import ru.unicorecms.unicoreconnect.bukkit.tasks.PlaytimeTask
 
 @Suppress("unused")
 class UnicoreConnectBukkit : JavaPlugin() {

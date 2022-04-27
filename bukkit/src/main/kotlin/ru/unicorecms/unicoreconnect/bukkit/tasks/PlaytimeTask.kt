@@ -1,8 +1,9 @@
-package ru.unicorecms.unicoreconnect.bukkit
+package ru.unicorecms.unicoreconnect.bukkit.tasks
 
 import com.Zrips.CMI.CMI
 import com.earth2me.essentials.Essentials
 import org.bukkit.Bukkit
+import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 
 class PlaytimeTask {
