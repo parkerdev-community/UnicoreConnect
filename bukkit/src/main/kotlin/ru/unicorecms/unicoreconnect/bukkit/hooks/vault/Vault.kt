@@ -1,5 +1,6 @@
 package ru.unicorecms.unicoreconnect.bukkit.hooks.vault
 
+import net.milkbowl.vault.chat.Chat
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
@@ -15,6 +16,7 @@ class Vault {
 
     companion object {
         var provider: Economy? = null
+        var chat_provider: Chat? = null
     }
 
     fun hook() {
@@ -26,6 +28,7 @@ class Vault {
                 ServicePriority.Highest
             )
             provider = plugin.server.servicesManager.getRegistration(Economy::class.java)?.provider
+            chat_provider = plugin.server.servicesManager.getRegistration(Chat::class.java)?.provider
             CommandManager.manager.registerCommand(MoneyCommand())
             logger.info("Successfully hook Vault")
             enabled = true
