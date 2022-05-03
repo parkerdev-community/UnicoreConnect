@@ -36,27 +36,31 @@ class UnicoreConnectBukkit : JavaPlugin() {
 
     override fun onEnable() {
         logger.info("Checking server...")
-        val gameServer = UnicoreCommon.serversService.check()
+        val gameServer = UnicoreCommon.serversService.check(logger)
 
-        UnicoreCommon.server = gameServer
-        logger.info("Successfully received ${gameServer.name} [#${gameServer.id}] server from UnicoreCMS")
-        logger.info("Starting WebSocket client...")
+        if (gameServer == null) {
+            logger.warning("Server with id '${UnicoreCommon.config.server}' not found in UnicoreCMS or ApiUrl incorrect!")
+        } else {
+            UnicoreCommon.server = gameServer
+            logger.info("Successfully received ${gameServer.name} [#${gameServer.id}] server from UnicoreCMS")
+            logger.info("Starting WebSocket client...")
 
-        commandManager.init()
-        socketListener.register()
-        socketClient.connect()
+            commandManager.init()
+            socketListener.register()
+            socketClient.connect()
 
-        banManger.hook()
-        vault.hook()
-        playtimeTask.load()
-        luckPerms.hook()
+            banManger.hook()
+            vault.hook()
+            playtimeTask.load()
+            luckPerms.hook()
 
-        CommandManager.manager.registerCommand(PlaytimeCommand())
-        CommandManager.manager.registerCommand(UnicoreConnectCommand())
-        CommandManager.manager.registerCommand(ShowcaseCommand())
+            CommandManager.manager.registerCommand(PlaytimeCommand())
+            CommandManager.manager.registerCommand(UnicoreConnectCommand())
+            CommandManager.manager.registerCommand(ShowcaseCommand())
 
-        reconnectScheduler = schedule(period = 1, unit = TimeUnit.MINUTES) { playtimeTask.handler() }
-        playtimeScheduler = schedule(period = 3, delay = 10) { socketClient.reconnectHandler() }
+            reconnectScheduler = schedule(period = 1, unit = TimeUnit.MINUTES) { playtimeTask.handler() }
+            playtimeScheduler = schedule(period = 3, delay = 10) { socketClient.reconnectHandler() }
+        }
     }
 
     override fun onDisable() {
