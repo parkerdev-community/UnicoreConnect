@@ -16,7 +16,6 @@ shadowJar {
     relocate 'com.google.gson', 'ru.unicorecms.unicoreconnect.libs.gson'
     relocate 'okhttp3', 'ru.unicorecms.unicoreconnect.libs.okhttp3'
     relocate 'okio', 'ru.unicorecms.unicoreconnect.libs.okio'
-    relocate 'hazae41.minecraft.kutils', 'ru.unicorecms.unicoreconnect.libs.kutils'
     relocate 'me.saiintbrisson', 'ru.unicorecms.unicoreconnect.libs.saiintbrisson'
     relocate 'org.greenrobot.eventbus', 'ru.unicorecms.unicoreconnect.libs.eventbus'
     relocate 'co.aikar.commands', 'ru.unicorecms.unicoreconnect.libs.acf'

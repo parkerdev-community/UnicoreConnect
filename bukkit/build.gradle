@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation("com.github.hazae41:mc-kutils:master-SNAPSHOT")
     implementation('co.aikar:acf-bukkit:0.5.1-SNAPSHOT')
     implementation("com.github.flinbein:PowerNBT:develop-SNAPSHOT")
     implementation project(':UnicoreConnect-common')

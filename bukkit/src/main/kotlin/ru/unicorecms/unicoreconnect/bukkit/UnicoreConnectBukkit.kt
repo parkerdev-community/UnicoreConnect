@@ -1,20 +1,19 @@
 package ru.unicorecms.unicoreconnect.bukkit
 
-import hazae41.minecraft.kutils.bukkit.schedule
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.scheduler.BukkitTask
-import ru.unicorecms.unicoreconnect.bukkit.config.UnicorePluginConfig
-import ru.unicorecms.unicoreconnect.bukkit.hooks.BanManager
-import ru.unicorecms.unicoreconnect.bukkit.hooks.vault.Vault
-import ru.unicorecms.unicoreconnect.bukkit.listeners.SocketListener
-import ru.unicorecms.unicoreconnect.common.SocketClient
-import ru.unicorecms.unicoreconnect.common.UnicoreCommon
-import java.util.concurrent.TimeUnit
 import ru.unicorecms.unicoreconnect.bukkit.commands.PlaytimeCommand
 import ru.unicorecms.unicoreconnect.bukkit.commands.ShowcaseCommand
 import ru.unicorecms.unicoreconnect.bukkit.commands.UnicoreConnectCommand
+import ru.unicorecms.unicoreconnect.bukkit.config.UnicorePluginConfig
+import ru.unicorecms.unicoreconnect.bukkit.hooks.BanManager
 import ru.unicorecms.unicoreconnect.bukkit.hooks.LuckPerms
+import ru.unicorecms.unicoreconnect.bukkit.hooks.vault.Vault
+import ru.unicorecms.unicoreconnect.bukkit.listeners.SocketListener
 import ru.unicorecms.unicoreconnect.bukkit.tasks.PlaytimeTask
+import ru.unicorecms.unicoreconnect.common.SocketClient
+import ru.unicorecms.unicoreconnect.common.UnicoreCommon
+
 
 @Suppress("unused")
 class UnicoreConnectBukkit : JavaPlugin() {
@@ -30,9 +29,6 @@ class UnicoreConnectBukkit : JavaPlugin() {
     private val banManger = BanManager()
     private val luckPerms = LuckPerms()
     private val playtimeTask = PlaytimeTask()
-
-    private var reconnectScheduler: BukkitTask? = null
-    private var playtimeScheduler: BukkitTask? = null
 
     override fun onEnable() {
         logger.info("Checking server...")
@@ -58,15 +54,16 @@ class UnicoreConnectBukkit : JavaPlugin() {
             CommandManager.manager.registerCommand(UnicoreConnectCommand())
             CommandManager.manager.registerCommand(ShowcaseCommand())
 
-            reconnectScheduler = schedule(period = 1, unit = TimeUnit.MINUTES) { playtimeTask.handler() }
-            playtimeScheduler = schedule(period = 3, delay = 10) { socketClient.reconnectHandler() }
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
+                { playtimeTask.handler() }, 0, 20 * 60
+            )
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
+                { socketClient.reconnectHandler() }, 20 * 10, 20 * 3
+            )
         }
     }
 
     override fun onDisable() {
-        reconnectScheduler?.cancel()
-        playtimeScheduler?.cancel()
-
         banManger.unhook()
         vault.unhook()
 

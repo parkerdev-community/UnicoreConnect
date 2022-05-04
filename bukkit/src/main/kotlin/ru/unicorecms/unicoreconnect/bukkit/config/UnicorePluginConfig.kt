@@ -1,6 +1,5 @@
 package ru.unicorecms.unicoreconnect.bukkit.config
 
-import hazae41.minecraft.kutils.bukkit.keys
 import org.bukkit.configuration.file.FileConfiguration
 import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
@@ -33,7 +32,7 @@ class UnicorePluginConfig {
 
         val mapItem = plugin.config.getConfigurationSection("items_mapping")
 
-        for (key in mapItem!!.keys) {
+        for (key in mapItem!!.getKeys(false)) {
             UnicoreCommon.itemsMap[key] = mapItem[key].toString()
         }
     }
