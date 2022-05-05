@@ -6,9 +6,9 @@ import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Subcommand
 import co.aikar.commands.annotation.Syntax
-import me.dpohvar.powernbt.nbt.NBTContainerItem
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryType
 import ru.unicorecms.unicoreconnect.bukkit.utils.ItemMagic
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.types.WarehouseItem
@@ -39,6 +39,8 @@ class ShowcaseCommand : BaseCommand() {
     fun all(player: Player) {
         val gived = arrayListOf<WarehouseItem>()
         val req = UnicoreCommon.showcaseService.find(player.uniqueId)
+        val virtualInventory = Bukkit.createInventory(null, InventoryType.PLAYER)
+        virtualInventory.contents = player.inventory.contents
 
         if (req.isEmpty())
             return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
@@ -50,7 +52,7 @@ class ShowcaseCommand : BaseCommand() {
 
                     if (itemStack != null) {
                         for (i in 1..item.amount) {
-                            if (player.inventory.addItem(itemStack).size == 0)
+                            if (virtualInventory.addItem(itemStack).size == 0)
                                 gived.add(item)
                         }
                     }
@@ -74,6 +76,7 @@ class ShowcaseCommand : BaseCommand() {
         }
 
         UnicoreCommon.showcaseService.gived(gived)
+        player.inventory.contents = virtualInventory.contents
         player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
     }
 
@@ -96,6 +99,8 @@ class ShowcaseCommand : BaseCommand() {
     fun give(player: Player, id: Int) {
         val gived = arrayListOf<WarehouseItem>()
         val req = UnicoreCommon.showcaseService.find(player.uniqueId).filter { it.id == id }
+        val virtualInventory = Bukkit.createInventory(null, InventoryType.PLAYER)
+        virtualInventory.contents = player.inventory.contents
 
         if (req.isEmpty())
             return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_give_fail", replacements = arrayOf("{id}", id.toString()), type = MessageType.ERROR))
@@ -107,7 +112,7 @@ class ShowcaseCommand : BaseCommand() {
 
                     if (itemStack != null) {
                         for (i in 1..item.amount) {
-                            if (player.inventory.addItem(itemStack).size == 0)
+                            if (virtualInventory.addItem(itemStack).size == 0)
                                 gived.add(item)
                         }
                     }
@@ -130,6 +135,7 @@ class ShowcaseCommand : BaseCommand() {
         }
 
         UnicoreCommon.showcaseService.gived(gived)
+        player.inventory.contents = virtualInventory.contents
         player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
     }
 }

@@ -16,8 +16,8 @@ class ShowcaseService {
         return UnicoreCommon.requester.get("${config.apiUrl}/store/warehouse/$uuid/${config.server}").getOrThrow()
     }
 
-    fun gived(items: ArrayList<WarehouseItem>): Boolean {
-        if (items.size == 0) return true
+    fun gived(items: ArrayList<WarehouseItem>): ArrayList<WarehouseItem> {
+        if (items.size == 0) return items
         val glow = arrayListOf<WarehouseItem>()
 
         for (item in items) {
@@ -30,6 +30,6 @@ class ShowcaseService {
             }
         }
 
-        return UnicoreCommon.requester.post("${config.apiUrl}/store/warehouse", glow).response.isSuccessful
+        return UnicoreCommon.requester.post("${config.apiUrl}/store/warehouse", glow).getOrThrow()
     }
 }
