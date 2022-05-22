@@ -4,16 +4,20 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.CommandAlias
 import co.aikar.commands.annotation.CommandPermission
 import co.aikar.commands.annotation.Subcommand
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import ru.unicorecms.unicoreconnect.bukkit.PluginInstance
 import ru.unicorecms.unicoreconnect.common.UnicoreCommon
 import ru.unicorecms.unicoreconnect.common.services.donate.DonateGroupService
 import ru.unicorecms.unicoreconnect.common.services.donate.DonatePermissionService
 
 @CommandAlias("unicoreconnect|uc")
 class UnicoreConnectCommand : BaseCommand() {
+    private val plugin = PluginInstance.plugin
+
     @CommandPermission("unicoreconnect.admin.sync")
     @Subcommand("sync")
-    fun sync (sender: CommandSender) {
+    fun sync (sender: CommandSender) = Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
         try {
             sender.sendMessage("Syncing UnicoreCMS donate-groups...")
             sender.sendMessage("Syncing UnicoreCMS donate-perms...")
@@ -26,5 +30,5 @@ class UnicoreConnectCommand : BaseCommand() {
         } catch (e: Exception) {
             sender.sendMessage("Error getting group list! $e")
         }
-    }
+    })
 }

@@ -24,7 +24,7 @@ class ShowcaseCommand : BaseCommand() {
     @Subcommand("create")
     @Syntax("[price] [name]")
     @CommandPermission("unicoreconnect.admin.showcase.create")
-    fun create(player: Player, price: Double, name: String) {
+    fun create(player: Player, price: Double, name: String) = Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
         val data = itemMagic.serialize(player.inventory.itemInHand, name, price)
         val req = UnicoreCommon.showcaseService.create(data)
 
@@ -32,18 +32,18 @@ class ShowcaseCommand : BaseCommand() {
             player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_create", replacements = arrayOf("{id}", data.id)))
         else
             throw Exception()
-    }
+    })
 
     @Subcommand("all")
     @CommandPermission("unicoreconnect.command.showcase.all")
-    fun all(player: Player) {
+    fun all(player: Player) = Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
         val gived = arrayListOf<WarehouseItem>()
         val req = UnicoreCommon.showcaseService.find(player.uniqueId)
         val virtualInventory = Bukkit.createInventory(null, InventoryType.PLAYER)
         virtualInventory.contents = player.inventory.contents
 
         if (req.isEmpty())
-            return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
+            return@Runnable player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
 
         for (item in req) {
             when (item.product.give_method) {
@@ -78,32 +78,32 @@ class ShowcaseCommand : BaseCommand() {
         UnicoreCommon.showcaseService.gived(gived)
         player.inventory.contents = virtualInventory.contents
         player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
-    }
+    })
 
     @Subcommand("list")
     @CommandPermission("unicoreconnect.command.showcase.list")
-    fun list(player: Player) {
+    fun list(player: Player) = Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
         val req = UnicoreCommon.showcaseService.find(player.uniqueId)
 
         if (req.isEmpty())
-            return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
+            return@Runnable player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_all_fail", type = MessageType.ERROR))
 
         player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_list", replacements = arrayOf("{items}", req.joinToString(
             "\n"
         ) { "${it.product.name} x${it.amount} (#${it.id})" })))
-    }
+    })
 
     @Syntax("[id]")
     @Subcommand("give")
     @CommandPermission("unicoreconnect.command.showcase.give")
-    fun give(player: Player, id: Int) {
+    fun give(player: Player, id: Int) = Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
         val gived = arrayListOf<WarehouseItem>()
         val req = UnicoreCommon.showcaseService.find(player.uniqueId).filter { it.id == id }
         val virtualInventory = Bukkit.createInventory(null, InventoryType.PLAYER)
         virtualInventory.contents = player.inventory.contents
 
         if (req.isEmpty())
-            return player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_give_fail", replacements = arrayOf("{id}", id.toString()), type = MessageType.ERROR))
+            return@Runnable player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase_give_fail", replacements = arrayOf("{id}", id.toString()), type = MessageType.ERROR))
 
         for (item in req) {
             when (item.product.give_method) {
@@ -137,5 +137,5 @@ class ShowcaseCommand : BaseCommand() {
         UnicoreCommon.showcaseService.gived(gived)
         player.inventory.contents = virtualInventory.contents
         player.sendMessage(CommandManager.msg("unicoreconnect.command_showcase", replacements = arrayOf("{amount}", gived.size.toString())))
-    }
+    })
 }
