@@ -1,8 +1,7 @@
 <img src="https://github.com/UnicoreProject/UnicoreConnect/blob/main/unicoreconnect.png?raw=true?v=2" />
 
 # UnicoreConnect ![Kotlin](https://img.shields.io/badge/-Kotlin-05122A?style=flat&logo=Kotlin&logoColor=FFA518)&nbsp;
-[![Build Status](https://github.com/UnicoreProject/UnicoreConnect/actions/workflows/gradle.yml/badge.svg)](https://github.com/UnicoreProject/UnicoreConnect/actions)
-[![Telegram](https://img.shields.io/endpoint?style=social&url=https://runkit.io/damiankrawczyk/telegram-badge/branches/master?url=https://t.me/unicore_project)](https://t.me/unicore_project)
+[![Build Status](https://github.com/UnicoreProject/UnicoreConnect/actions/workflows/gradle.yml/badge.svg)](https://github.com/UnicoreProject/UnicoreConnect/actions)(https://t.me/unicore_project)
 
 > Плагин **Spigot/Sponge** для интеграции экономики, прав, групп, склада-покупок, банов и сбора статистики между сайтом и серверами.
 
